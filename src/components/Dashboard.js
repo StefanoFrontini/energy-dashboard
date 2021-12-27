@@ -2,11 +2,12 @@ import { useGlobalContext } from "../context";
 import Loading from "./Loading";
 import LineChart from "./LineChart";
 import BarChart from "./BarChart";
+import React from "react";
 
 const svgWidth = 900;
 const svgHeight = svgWidth / 2;
 
-const Dashboard = () => {
+const Dashboard = React.forwardRef((props, ref) => {
   const {
     podData,
     loadingPodData,
@@ -20,7 +21,7 @@ const Dashboard = () => {
   }
 
   return (
-    <main className="main">
+    <main className="main" ref={ref}>
       <h2>dashboard page</h2>
       {podData.d3Data && (
         <LineChart {...podData} svgWidth={svgWidth} svgHeight={svgHeight} />
@@ -32,6 +33,6 @@ const Dashboard = () => {
       <h4>Comment</h4>
     </main>
   );
-};
+});
 
 export default Dashboard;

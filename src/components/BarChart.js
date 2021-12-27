@@ -16,10 +16,9 @@ const formatTime = timeFormat("%b");
 
 const formatNumber = format(",d");
 
-const fadeOpacity = 0.2;
+const fadeOpacity = 0.1;
 
 const xValue = (d) => d.month;
-// const yValue = (d) => d.kWh;
 const yearValue = (d) => d.year;
 const F1Value = (d) => d.F1;
 const F2Value = (d) => d.F2;
@@ -29,6 +28,7 @@ const margin = { top: 40, right: 100, bottom: 80, left: 80 };
 
 const BarChart = ({ d3Data, svgWidth, svgHeight }) => {
   const [hoveredValue, setHoveredValue] = useState(null);
+  const [hoveredPoint, setHoveredPoint] = useState([]);
 
   const innerWidth = svgWidth - margin.left - margin.right;
   const innerHeight = svgHeight - margin.top - margin.bottom;
@@ -48,12 +48,8 @@ const BarChart = ({ d3Data, svgWidth, svgHeight }) => {
 
   const yScale = scaleLinear().domain([0, maxValue]).range([innerHeight, 0]);
 
-  // const filteredData = d3Data.filter((d) => hoveredValue === colorValue(d));
-
   const groupByYear = groups(d3Data, yearValue);
   console.log("groupByYear", groupByYear);
-
-  // const sumstat = groups(filteredData, (d) => d.year);
 
   const subgroups = ["F1", "F2", "F3"];
 
@@ -61,10 +57,15 @@ const BarChart = ({ d3Data, svgWidth, svgHeight }) => {
     .domain(subgroups)
     .range([0, xScale.bandwidth()]);
 
-  // const colorValue = (d) => d[0];
   const colorScale = scaleOrdinal()
     .domain(subgroups)
     .range(["#e41a1c", "#377eb8", "#4daf4a"]);
+
+  const filteredData = d3Data.filter(
+    (d) => formatTime(d.month) === formatTime(hoveredPoint[0])
+  );
+
+  const sumstat = groups(filteredData, (d) => d.year);
 
   return (
     <>
@@ -101,16 +102,8 @@ const BarChart = ({ d3Data, svgWidth, svgHeight }) => {
                   </text>
                 );
               })}
-
               {groupByYear[i][1].map((d) => {
                 return (
-                  // <rect
-                  //   x={xScale(xValue(d))} //month
-                  //   y={innerHeight - yScale(yValue(d))} //kWh
-                  //   width={xScale.bandwidth()}
-                  //   height={yScale(yValue(d))} //kWh
-                  //   key={xValue(d)}
-                  // />
                   <g key={xValue(d)}>
                     <rect
                       x={xScale(xValue(d))}
@@ -143,7 +136,17 @@ const BarChart = ({ d3Data, svgWidth, svgHeight }) => {
                       height={innerHeight - yScale(F1Value(d))}
                       fill={colorScale("F1")}
                       opacity={hoveredValue === "F1" ? 1 : fadeOpacity}
+                      onMouseEnter={() =>
+                        setHoveredPoint([
+                          xValue(d),
+                          F1Value(d),
+                          colorScale("F1"),
+                          "F1",
+                        ])
+                      }
+                      onMouseOut={() => setHoveredPoint([])}
                     />
+
                     <rect
                       x={xScale(xValue(d)) + xSubgroup.bandwidth() + 2}
                       y={yScale(F2Value(d))}
@@ -151,6 +154,15 @@ const BarChart = ({ d3Data, svgWidth, svgHeight }) => {
                       height={innerHeight - yScale(F2Value(d))}
                       fill={colorScale("F2")}
                       opacity={hoveredValue === "F2" ? 1 : fadeOpacity}
+                      onMouseEnter={() =>
+                        setHoveredPoint([
+                          xValue(d),
+                          F2Value(d),
+                          colorScale("F2"),
+                          "F2",
+                        ])
+                      }
+                      onMouseOut={() => setHoveredPoint([])}
                     />
                     <rect
                       x={xScale(xValue(d)) + 2 * (xSubgroup.bandwidth() + 2)}
@@ -159,6 +171,15 @@ const BarChart = ({ d3Data, svgWidth, svgHeight }) => {
                       height={innerHeight - yScale(F3Value(d))}
                       fill={colorScale("F3")}
                       opacity={hoveredValue === "F3" ? 1 : fadeOpacity}
+                      onMouseEnter={() =>
+                        setHoveredPoint([
+                          xValue(d),
+                          F3Value(d),
+                          colorScale("F3"),
+                          "F3",
+                        ])
+                      }
+                      onMouseOut={() => setHoveredPoint([])}
                     />
                     <text
                       transform={`translate(${innerWidth / 2},-20)`}
@@ -199,6 +220,50 @@ const BarChart = ({ d3Data, svgWidth, svgHeight }) => {
                   </g>
                 );
               })}
+
+              {sumstat[i] &&
+                sumstat[i][1].map((element, ind) => {
+                  return (
+                    <g key={ind}>
+                      {hoveredPoint[3] === "F1" && (
+                        <text
+                          dx={xScale(element.month)}
+                          dy={yScale(element.F1) - 10}
+                          fill={hoveredPoint[2]}
+                          textAnchor="middle"
+                          className="tooltip"
+                        >
+                          {element.F1}
+                        </text>
+                      )}
+                      {hoveredPoint[3] === "F2" && (
+                        <text
+                          dx={xScale(element.month) + xSubgroup.bandwidth() + 2}
+                          dy={yScale(element.F2) - 10}
+                          fill={hoveredPoint[2]}
+                          textAnchor="middle"
+                          className="tooltip"
+                        >
+                          {element.F2}
+                        </text>
+                      )}
+                      {hoveredPoint[3] === "F3" && (
+                        <text
+                          dx={
+                            xScale(element.month) +
+                            2 * (xSubgroup.bandwidth() + 2)
+                          }
+                          dy={yScale(element.F3) - 10}
+                          fill={hoveredPoint[2]}
+                          textAnchor="middle"
+                          className="tooltip"
+                        >
+                          {element.F3}
+                        </text>
+                      )}
+                    </g>
+                  );
+                })}
             </g>
           </svg>
         );
