@@ -29,16 +29,21 @@ const GET_POD_DATA = `query ($id: ID!){
 
 const parseTime = timeParse("%m");
 
+const parseDate = timeParse("%Y-%m-%dT%H:%M:%S.%LZ");
+
 const transform = (x) => {
   const transformedData = x.map((item) => {
     return {
       kWh: Math.round(item.kWh),
       // date: parseTime(`${item.Anno.toString()}, ${item.Mese.toString()}`),
+      date: parseDate(item.date),
       year: item.anno.toString(),
       month: parseTime(item.mese.toString()),
       F1: Math.round(item.F1),
       F2: Math.round(item.F2),
       F3: Math.round(item.F3),
+      picco: item.piccoPotenza,
+      potenzaDisponibile: item.potenzaDisponibile,
     };
   });
   return transformedData;

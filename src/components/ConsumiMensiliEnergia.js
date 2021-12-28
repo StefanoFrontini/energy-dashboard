@@ -17,11 +17,11 @@ const xValue = (d) => d.month;
 const yValue = (d) => d.kWh;
 const colorValue = (d) => d.year;
 
-const fadeOpacity = 0.2;
+const fadeOpacity = 0.1;
 
 const margin = { top: 40, right: 100, bottom: 80, left: 80 };
 
-const LineChart = ({
+const ConsumiMensiliEnergia = ({
   ragioneSociale,
   pod,
   d3Data,
@@ -86,6 +86,7 @@ const LineChart = ({
                         xScale={xScale}
                         yScale={yScale}
                         colorScale={colorScale}
+                        unit="kWh"
                       />
                     </g>
                   );
@@ -152,4 +153,4 @@ const LineChart = ({
   );
 };
 
-export default LineChart;
+export default ConsumiMensiliEnergia;

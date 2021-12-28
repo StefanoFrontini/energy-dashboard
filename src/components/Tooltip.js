@@ -1,26 +1,26 @@
 import { timeFormat } from "d3";
 
-const format = timeFormat("%B");
+const formatTime = timeFormat("%B");
 
-const Tooltip = ({ hoveredPoint, xScale, yScale, colorScale }) => {
+const Tooltip = ({ hoveredPoint, xScale, yScale, colorScale, unit }) => {
   return (
     <>
       {hoveredPoint && (
         <text
           dx={xScale(hoveredPoint[0]) + 20}
           dy={yScale(hoveredPoint[1])}
-          fill={colorScale(hoveredPoint[2])}
+          fill={colorScale ? colorScale(hoveredPoint[2]) : "black"}
         >
-          {format(hoveredPoint[0])}
+          {formatTime(hoveredPoint[0])}
         </text>
       )}
       {hoveredPoint && (
         <text
           dx={xScale(hoveredPoint[0]) + 20}
           dy={yScale(hoveredPoint[1]) + 20}
-          fill={colorScale(hoveredPoint[2])}
+          fill={colorScale ? colorScale(hoveredPoint[2]) : "black"}
         >
-          {hoveredPoint[1]} kWh
+          {hoveredPoint[1]} {unit}
         </text>
       )}
     </>

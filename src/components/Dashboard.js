@@ -1,7 +1,8 @@
 import { useGlobalContext } from "../context";
 import Loading from "./Loading";
-import LineChart from "./LineChart";
-import BarChart from "./BarChart";
+import ConsumiMensiliEnergia from "./ConsumiMensiliEnergia";
+import ConsumiFasce from "./ConsumiFasce";
+import Picco from "./Picco";
 import React from "react";
 
 const svgWidth = 900;
@@ -24,11 +25,19 @@ const Dashboard = React.forwardRef((props, ref) => {
     <main className="main" ref={ref}>
       <h2>dashboard page</h2>
       {podData.d3Data && (
-        <LineChart {...podData} svgWidth={svgWidth} svgHeight={svgHeight} />
+        <ConsumiMensiliEnergia
+          {...podData}
+          svgWidth={svgWidth}
+          svgHeight={svgHeight}
+        />
       )}
       <h4>Comment</h4>
       {podData.d3Data && (
-        <BarChart {...podData} svgWidth={svgWidth} svgHeight={svgHeight} />
+        <ConsumiFasce {...podData} svgWidth={svgWidth} svgHeight={svgHeight} />
+      )}
+      <h4>Comment</h4>
+      {podData.d3Data && (
+        <Picco {...podData} svgWidth={svgWidth} svgHeight={svgHeight} />
       )}
       <h4>Comment</h4>
     </main>

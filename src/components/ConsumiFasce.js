@@ -26,14 +26,12 @@ const F3Value = (d) => d.F3;
 
 const margin = { top: 40, right: 100, bottom: 80, left: 80 };
 
-const BarChart = ({ d3Data, svgWidth, svgHeight }) => {
+const ConsumiFasce = ({ d3Data, svgWidth, svgHeight }) => {
   const [hoveredValue, setHoveredValue] = useState(null);
   const [hoveredPoint, setHoveredPoint] = useState([]);
 
   const innerWidth = svgWidth - margin.left - margin.right;
   const innerHeight = svgHeight - margin.top - margin.bottom;
-
-  console.log("D3Data", d3Data);
 
   const xScale = scaleBand()
     .domain(d3Data.map(xValue))
@@ -49,7 +47,6 @@ const BarChart = ({ d3Data, svgWidth, svgHeight }) => {
   const yScale = scaleLinear().domain([0, maxValue]).range([innerHeight, 0]);
 
   const groupByYear = groups(d3Data, yearValue);
-  console.log("groupByYear", groupByYear);
 
   const subgroups = ["F1", "F2", "F3"];
 
@@ -272,4 +269,4 @@ const BarChart = ({ d3Data, svgWidth, svgHeight }) => {
   );
 };
 
-export default BarChart;
+export default ConsumiFasce;
