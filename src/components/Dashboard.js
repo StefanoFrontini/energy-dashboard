@@ -3,6 +3,7 @@ import Loading from "./Loading";
 import ConsumiMensiliEnergia from "./ConsumiMensiliEnergia";
 import ConsumiFasce from "./ConsumiFasce";
 import Picco from "./Picco";
+import PiccoConsumi from "./PiccoConsumi";
 import React from "react";
 
 const svgWidth = 900;
@@ -38,6 +39,10 @@ const Dashboard = React.forwardRef((props, ref) => {
       <h4>Comment</h4>
       {podData.d3Data && (
         <Picco {...podData} svgWidth={svgWidth} svgHeight={svgHeight} />
+      )}
+      <h4>Comment</h4>
+      {podData.d3Data && (
+        <PiccoConsumi {...podData} svgWidth={svgWidth} svgHeight={svgHeight} />
       )}
       <h4>Comment</h4>
     </main>

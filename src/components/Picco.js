@@ -30,7 +30,7 @@ const Picco = ({ svgWidth, svgHeight, d3Data }) => {
   const [hoveredPoint, setHoveredPoint] = useState(null);
   const innerWidth = svgWidth - margin.left - margin.right;
   const innerHeight = svgHeight - margin.top - margin.bottom;
-  console.log("d3Data", d3Data);
+
   const maxY = max(d3Data, yValue);
   const maxPicco = max(d3Data, piccoValue);
 
