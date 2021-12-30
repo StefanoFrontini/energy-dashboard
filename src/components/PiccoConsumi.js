@@ -19,8 +19,7 @@ const PiccoConsumi = ({ svgWidth, svgHeight, d3Data }) => {
   const innerHeight = svgHeight - margin.top - margin.bottom;
   const [hoveredValue, setHoveredValue] = useState(false);
   const [hoveredPoint, setHoveredPoint] = useState(null);
-  console.log("hoveredPoint", hoveredPoint);
-  console.log("d3Data", d3Data);
+
   const xScale = scaleLinear()
     .domain(extent(d3Data, xValue))
     .range([0, innerWidth]);
@@ -30,6 +29,7 @@ const PiccoConsumi = ({ svgWidth, svgHeight, d3Data }) => {
     .nice();
 
   const groupByYear = groups(d3Data, yearValue);
+
   const filteredData = hoveredPoint
     ? d3Data.filter((d) => formatTime(d.month) === formatTime(hoveredPoint[2]))
     : d3Data;

@@ -12,6 +12,7 @@ const GET_POD_DATA = `query ($id: ID!){
         podId
         indirizzo
         consumiMensili
+        consumiOrari
         mensiliCommento
         azienda {
           data{
@@ -30,6 +31,20 @@ const GET_POD_DATA = `query ($id: ID!){
 const parseTime = timeParse("%m");
 
 const parseDate = timeParse("%Y-%m-%dT%H:%M:%S.%LZ");
+
+const transformOrari = (x) => {
+  const transformedData = x.map((item) => {
+    return {
+      kWh: Math.round(item.kWh),
+      date: parseDate(item.date),
+      year: item.anno.toString(),
+      month: parseTime(item.mese.toString()),
+      ora: item.ora,
+      giornoTipo: item.giornoTipo,
+    };
+  });
+  return transformedData;
+};
 
 const transform = (x) => {
   const transformedData = x.map((item) => {
@@ -81,6 +96,7 @@ const usePodData = () => {
           indirizzo: data.attributes.indirizzo,
           commento: data.attributes.mensiliCommento,
           d3Data: transform(data.attributes.consumiMensili.data),
+          d3DataOrari: transformOrari(data.attributes.consumiOrari.data),
         };
 
         setData(rawData);
