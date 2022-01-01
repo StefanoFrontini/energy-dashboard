@@ -62,7 +62,7 @@ const ConsumiFasce = ({ d3Data, svgWidth, svgHeight }) => {
     (d) => formatTime(d.month) === formatTime(hoveredPoint[0])
   );
 
-  const sumstat = groups(filteredData, (d) => d.year);
+  const sumstat = groups(filteredData, yearValue);
 
   return (
     <>

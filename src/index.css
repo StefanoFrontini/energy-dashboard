@@ -43,6 +43,7 @@ Variables
   --dark-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   --max-width: 1170px;
   --fixed-width: 620px;
+  --smallWidth: 85vw;
 }
 /*
 ===============
@@ -134,18 +135,6 @@ p {
   }
 }
 
-/*
-===============
-Dashboard
-===============
-*/
-
-main {
-  min-height: 100vh;
-  /* display: flex;
-  justify-content: center;
-  align-items: center; */
-}
 .sidebar-toggle {
   position: fixed;
   top: 2rem;
@@ -516,6 +505,33 @@ Dashboard
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+}
+
+.cocktails-center {
+  width: var(--smallWidth);
+  margin: 0 auto;
+  max-width: var(--max-width);
+  display: grid;
+  row-gap: 2rem;
+  column-gap: 0rem;
+  grid-template-columns: 1fr 1fr 1fr;
+  /* align-items: start; */
+}
+/* @media screen and (min-width: 576px) {
+  .cocktails-center {
+
+  }
+} */
+
+/*
+======
+Cocktail
+======
+*/
+
+.cocktail {
+  display: grid;
+  grid-template-rows: auto 1fr;
 }
 
 /*
