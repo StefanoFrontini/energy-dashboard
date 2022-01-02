@@ -7,8 +7,10 @@ import {
   format,
   timeFormat,
 } from "d3";
-
+import { useState } from "react";
 const margin = { top: 40, right: 10, bottom: 20, left: 30 };
+
+const fadeOpacity = 0.1;
 
 const formatNumber = format(",d");
 const formatTime = timeFormat("%B");
@@ -20,10 +22,13 @@ const hourValue = (d) => d.ora;
 const kWhValue = (d) => d.kWh;
 
 const ConsumiOrari = ({ svgWidth, svgHeight, d3DataOrari }) => {
-  const svgWidthOrari = 200;
-  const svgHeightOrari = 200;
+  const svgWidthOrari = 300;
+  const svgHeightOrari = 300;
   const innerWidth = svgWidthOrari - margin.left - margin.right;
   const innerHeight = svgHeightOrari - margin.top - margin.bottom;
+  const [hoveredPoint, setHoveredPoint] = useState(null);
+  const [hoveredValue, setHoveredValue] = useState(false);
+  console.log("hoveredPoint", hoveredPoint);
 
   console.log("d3DataOrari", d3DataOrari);
 
@@ -34,6 +39,26 @@ const ConsumiOrari = ({ svgWidth, svgHeight, d3DataOrari }) => {
     giornoTipoValue,
     hourValue
   );
+
+  const orderedRollupData = rollupData.map((el) => {
+    if (el[1][0][0] === "saturday") {
+      let newArray = [];
+      let newElement = [];
+      newArray = [el[1][2], el[1][0], el[1][1]];
+      newElement = [el[0], newArray];
+
+      return newElement;
+    } else if (el[1][0][0] === "sunday") {
+      let newArray = [];
+      let newElement = [];
+      newArray = [el[1][2], el[1][1], el[1][0]];
+      newElement = [el[0], newArray];
+      return newElement;
+    } else return el;
+  });
+
+  console.log("orderedRollupData", orderedRollupData);
+
   const xScale = scaleLinear()
     .domain(extent(d3DataOrari, hourValue))
     .range([0, innerWidth])
@@ -48,112 +73,181 @@ const ConsumiOrari = ({ svgWidth, svgHeight, d3DataOrari }) => {
     .y((d) => yScale(d[1]));
 
   console.log("rollupData:", rollupData);
+  const filteredData = hoveredPoint
+    ? d3DataOrari.filter((d) => d.ora === hoveredPoint[0])
+    : d3DataOrari;
+
+  console.log("filteredData", filteredData);
+
+  const sumstat = rollups(
+    filteredData,
+    (v) => Math.round(mean(v, kWhValue)),
+    monthValue,
+    giornoTipoValue,
+    hourValue
+  );
+
+  const orderedSumstat = sumstat.map((el) => {
+    if (el[1][0][0] === "saturday") {
+      let newArray = [];
+      let newElement = [];
+      newArray = [el[1][2], el[1][0], el[1][1]];
+      newElement = [el[0], newArray];
+
+      return newElement;
+    } else if (el[1][0][0] === "sunday") {
+      let newArray = [];
+      let newElement = [];
+      newArray = [el[1][2], el[1][1], el[1][0]];
+      newElement = [el[0], newArray];
+      return newElement;
+    } else return el;
+  });
+
+  console.log("orderedSumstat", orderedSumstat);
+
   return (
     <>
-      {rollupData.map((m, ind) => {
-        return (
-          <div key={ind} className="cocktails-center">
-            {rollupData[ind][1].map((item, indice) => {
-              return (
-                <svg
-                  width={svgWidthOrari}
-                  height={svgHeightOrari}
-                  key={indice}
-                  className="cocktail"
-                >
-                  <g
-                    transform={`translate(${margin.left},${margin.top})`}
-                    className="tick"
+      <div className="cocktails-center">
+        {orderedRollupData.map((m, ind) => {
+          return (
+            <div key={ind} className="cocktail">
+              {orderedRollupData[ind][1].map((item, indice) => {
+                return (
+                  <svg
+                    width={svgWidthOrari}
+                    height={svgHeightOrari}
+                    key={indice}
                   >
-                    {xScale.ticks().map((tickValue, index) => {
-                      return (
-                        <g
-                          transform={`translate(${xScale(
-                            tickValue
-                          )},${innerHeight})`}
-                          key={index}
-                          className="tick-text"
-                        >
-                          <text textAnchor="middle" alignmentBaseline="hanging">
-                            {formatNumber(tickValue)}
-                          </text>
-                        </g>
-                      );
-                    })}
-                    {yScale.ticks().map((tickValue, index) => {
-                      return (
-                        <g
-                          transform={`translate(-10,${yScale(tickValue)})`}
-                          key={index}
-                          className="tick-text"
-                        >
-                          <line x1={10} x2={innerWidth} stroke="black"></line>
-                          <text textAnchor="end" alignmentBaseline="middle">
-                            {formatNumber(tickValue)}
-                          </text>
-                        </g>
-                      );
-                    })}
-                    <path stroke="black" d={lineGenerator(item[1])} />
-                    {item[1].map((d, index) => {
-                      return (
-                        <g key={index}>
-                          <circle
-                            cx={xScale(d[0])}
-                            cy={yScale(d[1])}
-                            r={4}
-                            fill="black"
-                            /* onMouseEnter={() =>
-                          setHoveredPoint([xValue(d), yValue(d), colorValue(d)])
-                        }
-                        onMouseOut={() => setHoveredPoint(null)} */
-                          ></circle>
-                          {/* <Tooltip
+                    <g
+                      transform={`translate(${margin.left},${margin.top})`}
+                      className="tick"
+                    >
+                      {xScale.ticks().map((tickValue, index) => {
+                        return (
+                          <g
+                            transform={`translate(${xScale(
+                              tickValue
+                            )},${innerHeight})`}
+                            key={index}
+                            className="tick-text"
+                          >
+                            <text
+                              textAnchor="middle"
+                              alignmentBaseline="hanging"
+                            >
+                              {formatNumber(tickValue)}
+                            </text>
+                          </g>
+                        );
+                      })}
+                      {yScale.ticks().map((tickValue, index) => {
+                        return (
+                          <g
+                            transform={`translate(-10,${yScale(tickValue)})`}
+                            key={index}
+                            className="tick-text"
+                          >
+                            <line x1={10} x2={innerWidth} stroke="black"></line>
+                            <text textAnchor="end" alignmentBaseline="middle">
+                              {formatNumber(tickValue)}
+                            </text>
+                          </g>
+                        );
+                      })}
+                      <path
+                        opacity={hoveredValue ? fadeOpacity : 1}
+                        stroke="black"
+                        d={lineGenerator(item[1])}
+                      />
+                      {item[1].map((d, index) => {
+                        return (
+                          <g
+                            key={index}
+                            opacity={hoveredValue ? fadeOpacity : 1}
+                          >
+                            <circle
+                              cx={xScale(d[0])}
+                              cy={yScale(d[1])}
+                              r={4}
+                              fill="black"
+                              onMouseEnter={() => {
+                                setHoveredPoint([d[0], d[1]]);
+                                setHoveredValue(true);
+                              }}
+                              onMouseOut={() => {
+                                setHoveredPoint(null);
+                                setHoveredValue(false);
+                              }}
+                            ></circle>
+                            {/* <Tooltip
                         hoveredPoint={hoveredPoint}
                         xScale={xScale}
                         yScale={yScale}
                         colorScale={colorScale}
                         unit="kWh"
                       /> */}
-                        </g>
-                      );
-                    })}
+                          </g>
+                        );
+                      })}
 
-                    {/*         {sumstat.map((item) => {
-          return (
-            <g key={item[0]}>
-              <path stroke={colorScale(item[0])} d={lineGenerator(item[1])} />
-              {item[1].map((d, index) => {
-                return (
-                  <g key={index}>
-                    <circle
-                      cx={xScale(xValue(d))}
-                      cy={yScale(yValue(d))}
-                      r={4}
-                      fill={colorScale(item[0])}
-                    ></circle>
-                  </g>
+                      {/* <path d={lineGenerator(d3Data)} /> */}
+                      <text
+                        transform={`translate(${innerWidth / 2},-20)`}
+                        textAnchor="middle"
+                      >
+                        {formatTime(rollupData[ind][0])}
+                        {" - "}
+                        {item[0]}
+                      </text>
+
+                      {orderedSumstat[ind] &&
+                        hoveredPoint &&
+                        orderedSumstat[ind][1][indice][1].map((x, i) => {
+                          return (
+                            <g key={i}>
+                              <text
+                                dx={xScale(x[0])}
+                                dy={yScale(x[1]) - 10}
+                                fill="black"
+                                textAnchor="middle"
+                                className="tooltip"
+                              >
+                                {x[1]} kWh
+                              </text>
+                              <text
+                                dx={xScale(x[0])}
+                                dy={yScale(x[1]) - 20}
+                                fill="black"
+                                textAnchor="middle"
+                                className="tooltip"
+                              >
+                                ora {x[0]}
+                              </text>
+                              <circle
+                                cx={xScale(x[0])}
+                                cy={yScale(x[1])}
+                                r={4}
+                                onMouseEnter={() => {
+                                  setHoveredPoint([x[0], x[1]]);
+                                  setHoveredValue(true);
+                                }}
+                                onMouseOut={() => {
+                                  setHoveredPoint(null);
+                                  setHoveredValue(false);
+                                }}
+                              ></circle>
+                            </g>
+                          );
+                        })}
+                    </g>
+                  </svg>
                 );
               })}
-            </g>
+            </div>
           );
-        })} */}
-                    {/* <path d={lineGenerator(d3Data)} /> */}
-                    <text
-                      transform={`translate(${innerWidth / 2},-20)`}
-                      textAnchor="middle"
-                    >
-                      {formatTime(rollupData[ind][0])}
-                      {" - "}
-                      {item[0]}
-                    </text>
-                  </g>
-                </svg>
-              );
-            })}
-          </div>
-        );
-      })}
+        })}
+      </div>
     </>
   );
 };

@@ -43,7 +43,7 @@ Variables
   --dark-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   --max-width: 1170px;
   --fixed-width: 620px;
-  --smallWidth: 85vw;
+  --smallWidth: 95vw;
 }
 /*
 ===============
@@ -509,12 +509,13 @@ Dashboard
 
 .cocktails-center {
   width: var(--smallWidth);
-  margin: 0 auto;
+  justify-items: center;
+
   max-width: var(--max-width);
   display: grid;
   row-gap: 2rem;
   column-gap: 0rem;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr;
   /* align-items: start; */
 }
 /* @media screen and (min-width: 576px) {
@@ -530,8 +531,9 @@ Cocktail
 */
 
 .cocktail {
-  display: grid;
-  grid-template-rows: auto 1fr;
+  /* display: grid;
+  grid-template-rows: auto 1fr; */
+  display: flex;
 }
 
 /*
@@ -565,7 +567,7 @@ path {
 }
 
 .axis-label {
-  font-size: 0.8rem;
+  font-size: 0.62rem;
 }
 
 .legendText {
@@ -574,5 +576,33 @@ path {
 
 .tooltip {
   font-weight: bold;
-  font-size: 1.2rem;
+  font-size: 0.62rem;
+}
+/*
+===============
+Print
+===============
+*/
+
+@media all {
+  .page-break {
+    display: none;
+  }
+}
+
+@media print {
+  html,
+  body {
+    height: initial !important;
+    overflow: initial !important;
+    -webkit-print-color-adjust: exact;
+  }
+}
+
+@media print {
+  h4 {
+    margin-top: 1rem;
+    display: block !important;
+    break-before: always;
+  }
 }

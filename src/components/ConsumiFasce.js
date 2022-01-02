@@ -29,9 +29,11 @@ const margin = { top: 40, right: 100, bottom: 80, left: 80 };
 const ConsumiFasce = ({ d3Data, svgWidth, svgHeight }) => {
   const [hoveredValue, setHoveredValue] = useState(null);
   const [hoveredPoint, setHoveredPoint] = useState([]);
+  const svgWidthFasce = 1000;
+  const svgHeightFasce = 220;
 
-  const innerWidth = svgWidth - margin.left - margin.right;
-  const innerHeight = svgHeight - margin.top - margin.bottom;
+  const innerWidth = svgWidthFasce - margin.left - margin.right;
+  const innerHeight = svgHeightFasce - margin.top - margin.bottom;
 
   const xScale = scaleBand()
     .domain(d3Data.map(xValue))
@@ -68,7 +70,7 @@ const ConsumiFasce = ({ d3Data, svgWidth, svgHeight }) => {
     <>
       {groupByYear.map((item, i) => {
         return (
-          <svg width={svgWidth} height={svgHeight} key={item[0]}>
+          <svg width={svgWidthFasce} height={svgHeightFasce} key={item[0]}>
             <g
               transform={`translate(${margin.left},${margin.top})`}
               className="tick"
@@ -80,7 +82,11 @@ const ConsumiFasce = ({ d3Data, svgWidth, svgHeight }) => {
                     key={index}
                   >
                     <line x1={10} x2={innerWidth} stroke="black"></line>
-                    <text textAnchor="end" alignmentBaseline="middle">
+                    <text
+                      textAnchor="end"
+                      className="axis-label"
+                      alignmentBaseline="middle"
+                    >
                       {formatNumber(tickValue)}
                     </text>
                   </g>
@@ -94,6 +100,7 @@ const ConsumiFasce = ({ d3Data, svgWidth, svgHeight }) => {
                     y={innerHeight + 4}
                     alignmentBaseline="hanging"
                     textAnchor="middle"
+                    className="axis-label"
                   >
                     {formatTime(tickValue)}
                   </text>
@@ -182,9 +189,9 @@ const ConsumiFasce = ({ d3Data, svgWidth, svgHeight }) => {
                       transform={`translate(${innerWidth / 2},-20)`}
                       textAnchor="middle"
                     >
-                      Andamento consumi per fasce - anno {item[0]}
+                      Andamento consumi per fasce (kWh) - anno {item[0]}
                     </text>
-                    <text
+                    {/* <text
                       transform={`translate(-60,${
                         innerHeight / 2
                       }) rotate(-90)`}
@@ -192,8 +199,8 @@ const ConsumiFasce = ({ d3Data, svgWidth, svgHeight }) => {
                       className="axis-label"
                     >
                       kWh
-                    </text>
-                    <text
+                    </text> */}
+                    {/* <text
                       transform={`translate(${innerWidth / 2},${
                         innerHeight + 40
                       })`}
@@ -202,7 +209,7 @@ const ConsumiFasce = ({ d3Data, svgWidth, svgHeight }) => {
                       className="axis-label"
                     >
                       Time
-                    </text>
+                    </text> */}
                     <g transform={`translate(${innerWidth + 20})`}>
                       <ColorLegend
                         colorScale={colorScale}

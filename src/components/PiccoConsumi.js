@@ -7,7 +7,7 @@ const yValue = (d) => d.picco;
 const yearValue = (d) => d.year;
 const monthValue = (d) => d.month;
 
-const margin = { top: 40, right: 100, bottom: 80, left: 80 };
+const margin = { top: 50, right: 20, bottom: 10, left: 30 };
 
 const fadeOpacity = 0.1;
 
@@ -15,8 +15,10 @@ const formatNumber = format(",d");
 const formatTime = timeFormat("%b");
 
 const PiccoConsumi = ({ svgWidth, svgHeight, d3Data }) => {
-  const innerWidth = svgWidth - margin.left - margin.right;
-  const innerHeight = svgHeight - margin.top - margin.bottom;
+  const svgWidthPiccoConsumi = 300;
+  const svgHeightPiccoConsumi = 300;
+  const innerWidth = svgWidthPiccoConsumi - margin.left - margin.right;
+  const innerHeight = svgHeightPiccoConsumi - margin.top - margin.bottom;
   const [hoveredValue, setHoveredValue] = useState(false);
   const [hoveredPoint, setHoveredPoint] = useState(null);
 
@@ -35,21 +37,29 @@ const PiccoConsumi = ({ svgWidth, svgHeight, d3Data }) => {
     : d3Data;
   const sumstat = groups(filteredData, yearValue);
   return (
-    <>
+    <div className="cocktail">
       {groupByYear.map((item, i) => {
         return (
-          <svg width={svgWidth} height={svgHeight} key={item[0]}>
+          <svg
+            width={svgWidthPiccoConsumi}
+            height={svgHeightPiccoConsumi}
+            key={item[0]}
+          >
             <g
               transform={`translate(${margin.left},${margin.top})`}
               className="tick"
             >
-              {xScale.ticks().map((tickValue, index) => {
+              {xScale.ticks(5).map((tickValue, index) => {
                 return (
                   <g
                     transform={`translate(${xScale(tickValue)},${innerHeight})`}
                     key={index}
                   >
-                    <text textAnchor="middle" alignmentBaseline="hanging">
+                    <text
+                      textAnchor="middle"
+                      alignmentBaseline="hanging"
+                      className="axis-label"
+                    >
                       {formatNumber(tickValue)}
                     </text>
                   </g>
@@ -58,11 +68,15 @@ const PiccoConsumi = ({ svgWidth, svgHeight, d3Data }) => {
               {yScale.ticks().map((tickValue, index) => {
                 return (
                   <g
-                    transform={`translate(0,${yScale(tickValue)})`}
+                    transform={`translate(-15,${yScale(tickValue)})`}
                     key={index}
                   >
                     <line x1={10} x2={innerWidth} stroke="black"></line>
-                    <text textAnchor="end" alignmentBaseline="middle">
+                    <text
+                      textAnchor="end"
+                      alignmentBaseline="middle"
+                      className="axis-label"
+                    >
                       {formatNumber(tickValue)}
                     </text>
                   </g>
@@ -84,7 +98,11 @@ const PiccoConsumi = ({ svgWidth, svgHeight, d3Data }) => {
                         setHoveredValue(false);
                       }}
                     ></circle>
-                    <text dx={xScale(xValue(d)) + 5} dy={yScale(yValue(d))}>
+                    <text
+                      dx={xScale(xValue(d)) + 5}
+                      dy={yScale(yValue(d))}
+                      className="axis-label"
+                    >
                       {formatTime(monthValue(d))}
                     </text>
 
@@ -92,9 +110,9 @@ const PiccoConsumi = ({ svgWidth, svgHeight, d3Data }) => {
                       transform={`translate(${innerWidth / 2},-20)`}
                       textAnchor="middle"
                     >
-                      Picco vs Consumi - anno {item[0]}
+                      {item[0]}
                     </text>
-                    <text
+                    {/* <text
                       transform={`translate(-60,${
                         innerHeight / 2
                       }) rotate(-90)`}
@@ -102,8 +120,8 @@ const PiccoConsumi = ({ svgWidth, svgHeight, d3Data }) => {
                       className="axis-label"
                     >
                       Picco - kW
-                    </text>
-                    <text
+                    </text> */}
+                    {/* <text
                       transform={`translate(${innerWidth / 2},${
                         innerHeight + 40
                       })`}
@@ -112,7 +130,7 @@ const PiccoConsumi = ({ svgWidth, svgHeight, d3Data }) => {
                       className="axis-label"
                     >
                       Consumi mensili kWh
-                    </text>
+                    </text> */}
                   </g>
                 );
               })}
@@ -132,7 +150,7 @@ const PiccoConsumi = ({ svgWidth, svgHeight, d3Data }) => {
                       </text>
                       <text
                         dx={xScale(xValue(d))}
-                        dy={yScale(yValue(d)) - 30}
+                        dy={yScale(yValue(d)) - 20}
                         fill="black"
                         textAnchor="middle"
                         className="tooltip"
@@ -141,7 +159,7 @@ const PiccoConsumi = ({ svgWidth, svgHeight, d3Data }) => {
                       </text>
                       <text
                         dx={xScale(xValue(d))}
-                        dy={yScale(yValue(d)) - 50}
+                        dy={yScale(yValue(d)) - 30}
                         fill="black"
                         textAnchor="middle"
                         className="tooltip"
@@ -172,7 +190,7 @@ const PiccoConsumi = ({ svgWidth, svgHeight, d3Data }) => {
           </svg>
         );
       })}
-    </>
+    </div>
   );
 };
 

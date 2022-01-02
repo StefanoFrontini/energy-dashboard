@@ -56,39 +56,78 @@ const Picco = ({ svgWidth, svgHeight, d3Data }) => {
 
   const sumstat = groups(filteredData, (d) => d.year);
   return (
-    <svg width={svgWidth} height={svgHeight}>
-      <g transform={`translate(${margin.left},${margin.top})`}>
-        {yScale.ticks().map((tickValue, index) => {
-          return (
-            <g
-              transform={`translate(0,${yScale(tickValue)})`}
-              key={index}
-              className="tick"
-            >
-              <line x1={10} x2={innerWidth} stroke="black"></line>
-              <text textAnchor="end" alignmentBaseline="middle">
-                {formatNumber(tickValue)}
+    <>
+      <svg width={svgWidth} height={svgHeight}>
+        <g transform={`translate(${margin.left},${margin.top})`}>
+          {yScale.ticks().map((tickValue, index) => {
+            return (
+              <g
+                transform={`translate(0,${yScale(tickValue)})`}
+                key={index}
+                className="tick"
+              >
+                <line x1={10} x2={innerWidth} stroke="black"></line>
+                <text textAnchor="end" alignmentBaseline="middle">
+                  {formatNumber(tickValue)}
+                </text>
+              </g>
+            );
+          })}
+          {xScale.ticks().map((tickValue, index) => {
+            return (
+              <text
+                x={xScale(tickValue)}
+                y={innerHeight + 24}
+                alignmentBaseline="hanging"
+                textAnchor="middle"
+                key={index}
+              >
+                {formatTime(tickValue)}
               </text>
-            </g>
-          );
-        })}
-        {xScale.ticks().map((tickValue, index) => {
-          return (
-            <text
-              x={xScale(tickValue)}
-              y={innerHeight + 24}
-              alignmentBaseline="hanging"
-              textAnchor="middle"
-              key={index}
-            >
-              {formatTime(tickValue)}
-            </text>
-          );
-        })}
-        <path stroke="black" d={piccoLineGenerator(d3Data)} />
+            );
+          })}
+          <path stroke="black" d={piccoLineGenerator(d3Data)} />
 
-        <g opacity={hoveredValue ? fadeOpacity : 1}>
-          {groupData.map((item) => {
+          <g opacity={hoveredValue ? fadeOpacity : 1}>
+            {groupData.map((item) => {
+              return (
+                <g key={item[0]}>
+                  <path
+                    stroke={colorScale(item[0])}
+                    d={lineGenerator(item[1])}
+                  />
+                  {item[1].map((d, index) => {
+                    return (
+                      <g key={index}>
+                        <circle
+                          cx={xScale(xValue(d))}
+                          cy={yScale(yValue(d))}
+                          r={4}
+                          fill={colorScale(item[0])}
+                          onMouseEnter={() =>
+                            setHoveredPoint([
+                              xValue(d),
+                              yValue(d),
+                              colorValue(d),
+                            ])
+                          }
+                          onMouseOut={() => setHoveredPoint(null)}
+                        ></circle>
+                        <Tooltip
+                          hoveredPoint={hoveredPoint}
+                          xScale={xScale}
+                          yScale={yScale}
+                          colorScale={colorScale}
+                          unit="kW"
+                        />
+                      </g>
+                    );
+                  })}
+                </g>
+              );
+            })}
+          </g>
+          {sumstat.map((item) => {
             return (
               <g key={item[0]}>
                 <path stroke={colorScale(item[0])} d={lineGenerator(item[1])} />
@@ -100,78 +139,48 @@ const Picco = ({ svgWidth, svgHeight, d3Data }) => {
                         cy={yScale(yValue(d))}
                         r={4}
                         fill={colorScale(item[0])}
-                        onMouseEnter={() =>
-                          setHoveredPoint([xValue(d), yValue(d), colorValue(d)])
-                        }
-                        onMouseOut={() => setHoveredPoint(null)}
                       ></circle>
-                      <Tooltip
-                        hoveredPoint={hoveredPoint}
-                        xScale={xScale}
-                        yScale={yScale}
-                        colorScale={colorScale}
-                        unit="kW"
-                      />
                     </g>
                   );
                 })}
               </g>
             );
           })}
+          <text
+            transform={`translate(${innerWidth / 2},-20)`}
+            textAnchor="middle"
+          >
+            Andamento picco di potenza vs potenza disponibile
+          </text>
+          <text
+            transform={`translate(-60,${innerHeight / 2}) rotate(-90)`}
+            textAnchor="middle"
+            className="axis-label"
+          >
+            kW
+          </text>
+          <text
+            transform={`translate(${innerWidth / 2},${innerHeight + 40})`}
+            textAnchor="middle"
+            alignmentBaseline="hanging"
+            className="axis-label"
+          >
+            Time
+          </text>
+          <g transform={`translate(${innerWidth + 20})`}>
+            <ColorLegend
+              colorScale={colorScale}
+              tickSpacing={25}
+              tickTextOffset={16}
+              tickSize={8}
+              onHover={setHoveredValue}
+              hoveredValue={hoveredValue}
+              fadeOpacity={fadeOpacity}
+            />
+          </g>
         </g>
-        {sumstat.map((item) => {
-          return (
-            <g key={item[0]}>
-              <path stroke={colorScale(item[0])} d={lineGenerator(item[1])} />
-              {item[1].map((d, index) => {
-                return (
-                  <g key={index}>
-                    <circle
-                      cx={xScale(xValue(d))}
-                      cy={yScale(yValue(d))}
-                      r={4}
-                      fill={colorScale(item[0])}
-                    ></circle>
-                  </g>
-                );
-              })}
-            </g>
-          );
-        })}
-        <text
-          transform={`translate(${innerWidth / 2},-20)`}
-          textAnchor="middle"
-        >
-          Andamento picco di potenza vs potenza disponibile
-        </text>
-        <text
-          transform={`translate(-60,${innerHeight / 2}) rotate(-90)`}
-          textAnchor="middle"
-          className="axis-label"
-        >
-          kW
-        </text>
-        <text
-          transform={`translate(${innerWidth / 2},${innerHeight + 40})`}
-          textAnchor="middle"
-          alignmentBaseline="hanging"
-          className="axis-label"
-        >
-          Time
-        </text>
-        <g transform={`translate(${innerWidth + 20})`}>
-          <ColorLegend
-            colorScale={colorScale}
-            tickSpacing={25}
-            tickTextOffset={16}
-            tickSize={8}
-            onHover={setHoveredValue}
-            hoveredValue={hoveredValue}
-            fadeOpacity={fadeOpacity}
-          />
-        </g>
-      </g>
-    </svg>
+      </svg>
+    </>
   );
 };
 

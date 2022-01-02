@@ -26,6 +26,7 @@ const Dashboard = React.forwardRef((props, ref) => {
   return (
     <main className="main" ref={ref}>
       <h2>dashboard page</h2>
+
       {podData.d3Data && (
         <ConsumiMensiliEnergia
           {...podData}
@@ -33,10 +34,13 @@ const Dashboard = React.forwardRef((props, ref) => {
           svgHeight={svgHeight}
         />
       )}
+
       <h4>Comment</h4>
+
       {podData.d3Data && (
         <ConsumiFasce {...podData} svgWidth={svgWidth} svgHeight={svgHeight} />
       )}
+
       <h4>Comment</h4>
       {podData.d3Data && (
         <Picco {...podData} svgWidth={svgWidth} svgHeight={svgHeight} />
