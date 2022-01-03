@@ -13,7 +13,11 @@ const GET_POD_DATA = `query ($id: ID!){
         indirizzo
         consumiMensili
         consumiOrari
+        fasceCommento
         mensiliCommento
+        piccoCommento
+        piccoConsumiCommento
+        orariCommento
         azienda {
           data{
             id
@@ -94,7 +98,11 @@ const usePodData = () => {
             data.attributes.azienda.data.attributes.ragioneSociale,
           pod: data.attributes.podId,
           indirizzo: data.attributes.indirizzo,
-          commento: data.attributes.mensiliCommento,
+          mensiliCommento: data.attributes.mensiliCommento,
+          fasceCommento: data.attributes.fasceCommento,
+          piccoCommento: data.attributes.piccoCommento,
+          piccoConsumiCommento: data.attributes.piccoConsumiCommento,
+          orariCommento: data.attributes.orariCommento,
           d3Data: transform(data.attributes.consumiMensili.data),
           d3DataOrari: transformOrari(data.attributes.consumiOrari.data),
         };

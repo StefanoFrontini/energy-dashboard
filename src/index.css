@@ -578,12 +578,20 @@ path {
   font-weight: bold;
   font-size: 0.62rem;
 }
+
+.warning p {
+  color: red;
+}
+
+.ok p {
+  color: green;
+}
 /*
 ===============
 Print
 ===============
 */
-
+/*
 @media all {
   .page-break {
     display: none;
@@ -603,6 +611,7 @@ Print
   h4 {
     margin-top: 1rem;
     display: block !important;
-    break-before: always;
+    break-after: always;
   }
 }
+ */

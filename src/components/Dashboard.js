@@ -6,6 +6,7 @@ import Picco from "./Picco";
 import PiccoConsumi from "./PiccoConsumi";
 import ConsumiOrari from "./ConsumiOrari";
 import React from "react";
+import ReactMarkdown from "react-markdown";
 
 const svgWidth = 900;
 const svgHeight = svgWidth / 2;
@@ -35,25 +36,41 @@ const Dashboard = React.forwardRef((props, ref) => {
         />
       )}
 
-      <h4>Comment</h4>
+      <article className="ok">
+        <ReactMarkdown>{podData.mensiliCommento}</ReactMarkdown>
+      </article>
 
       {podData.d3Data && (
         <ConsumiFasce {...podData} svgWidth={svgWidth} svgHeight={svgHeight} />
       )}
 
-      <h4>Comment</h4>
+      <article className="ok">
+        <ReactMarkdown>{podData.fasceCommento}</ReactMarkdown>
+      </article>
+
       {podData.d3Data && (
         <Picco {...podData} svgWidth={svgWidth} svgHeight={svgHeight} />
       )}
-      <h4>Comment</h4>
+
+      <article className="ok">
+        <ReactMarkdown>{podData.piccoCommento}</ReactMarkdown>
+      </article>
+
       {podData.d3Data && (
         <PiccoConsumi {...podData} svgWidth={svgWidth} svgHeight={svgHeight} />
       )}
-      <h4>Comment</h4>
+
+      <article className="ok">
+        <ReactMarkdown>{podData.piccoConsumiCommento}</ReactMarkdown>
+      </article>
+
       {podData.d3DataOrari && (
         <ConsumiOrari {...podData} svgWidth={svgWidth} svgHeight={svgHeight} />
       )}
-      <h4>Comment</h4>
+
+      <article className="ok">
+        <ReactMarkdown>{podData.orariCommento}</ReactMarkdown>
+      </article>
     </main>
   );
 });

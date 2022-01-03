@@ -28,9 +28,6 @@ const ConsumiOrari = ({ svgWidth, svgHeight, d3DataOrari }) => {
   const innerHeight = svgHeightOrari - margin.top - margin.bottom;
   const [hoveredPoint, setHoveredPoint] = useState(null);
   const [hoveredValue, setHoveredValue] = useState(false);
-  console.log("hoveredPoint", hoveredPoint);
-
-  console.log("d3DataOrari", d3DataOrari);
 
   const rollupData = rollups(
     d3DataOrari,
@@ -57,8 +54,6 @@ const ConsumiOrari = ({ svgWidth, svgHeight, d3DataOrari }) => {
     } else return el;
   });
 
-  console.log("orderedRollupData", orderedRollupData);
-
   const xScale = scaleLinear()
     .domain(extent(d3DataOrari, hourValue))
     .range([0, innerWidth])
@@ -72,12 +67,9 @@ const ConsumiOrari = ({ svgWidth, svgHeight, d3DataOrari }) => {
     .x((d) => xScale(d[0]))
     .y((d) => yScale(d[1]));
 
-  console.log("rollupData:", rollupData);
   const filteredData = hoveredPoint
     ? d3DataOrari.filter((d) => d.ora === hoveredPoint[0])
     : d3DataOrari;
-
-  console.log("filteredData", filteredData);
 
   const sumstat = rollups(
     filteredData,
@@ -103,8 +95,6 @@ const ConsumiOrari = ({ svgWidth, svgHeight, d3DataOrari }) => {
       return newElement;
     } else return el;
   });
-
-  console.log("orderedSumstat", orderedSumstat);
 
   return (
     <>
