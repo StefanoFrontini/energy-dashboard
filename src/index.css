@@ -43,7 +43,7 @@ Variables
   --dark-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   --max-width: 1170px;
   --fixed-width: 620px;
-  --smallWidth: 95vw;
+  --smallWidth: 85vw;
 }
 /*
 ===============
@@ -77,7 +77,7 @@ h2,
 h3,
 h4 {
   letter-spacing: var(--spacing);
-  text-transform: capitalize;
+  /* text-transform: capitalize; */
   line-height: 1.25;
   margin-bottom: 0.75rem;
 }
@@ -500,6 +500,10 @@ Dashboard
 ===============
 */
 
+section {
+  padding-left: 2rem;
+}
+
 .main {
   display: flex;
   flex-direction: column;
@@ -507,7 +511,7 @@ Dashboard
   align-items: center;
 }
 
-.cocktails-center {
+/* .cocktails-center {
   width: var(--smallWidth);
   justify-items: center;
 
@@ -516,8 +520,8 @@ Dashboard
   row-gap: 2rem;
   column-gap: 0rem;
   grid-template-columns: 1fr;
-  /* align-items: start; */
-}
+  align-items: start;
+} */
 /* @media screen and (min-width: 576px) {
   .cocktails-center {
 
@@ -534,6 +538,17 @@ Cocktail
   /* display: grid;
   grid-template-rows: auto 1fr; */
   display: flex;
+  margin-bottom: 2rem;
+}
+
+/*
+===============
+Header
+===============
+*/
+
+header {
+  padding: 2rem;
 }
 
 /*
@@ -574,6 +589,11 @@ path {
   cursor: default;
 }
 
+.legendTextOrari {
+  cursor: default;
+  font-size: 0.62rem;
+}
+
 .tooltip {
   font-weight: bold;
   font-size: 0.62rem;
@@ -592,11 +612,7 @@ Print
 ===============
 */
 /*
-@media all {
-  .page-break {
-    display: none;
-  }
-}
+
 
 @media print {
   html,
@@ -615,3 +631,15 @@ Print
   }
 }
  */
+
+@media print {
+  .page-break-mensili {
+    margin-bottom: 30rem;
+  }
+  .page-break-fasce {
+    margin-bottom: 15rem;
+  }
+  .page-break-picco {
+    margin-bottom: 16rem;
+  }
+}

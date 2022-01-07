@@ -29,7 +29,7 @@ const margin = { top: 40, right: 100, bottom: 80, left: 80 };
 const ConsumiFasce = ({ d3Data, svgWidth, svgHeight }) => {
   const [hoveredValue, setHoveredValue] = useState(null);
   const [hoveredPoint, setHoveredPoint] = useState([]);
-  const svgWidthFasce = 1000;
+  const svgWidthFasce = 870;
   const svgHeightFasce = 220;
 
   const innerWidth = svgWidthFasce - margin.left - margin.right;
@@ -58,7 +58,7 @@ const ConsumiFasce = ({ d3Data, svgWidth, svgHeight }) => {
 
   const colorScale = scaleOrdinal()
     .domain(subgroups)
-    .range(["#e41a1c", "#377eb8", "#4daf4a"]);
+    .range(["#e41a1c", "#9e9820", "#4daf4a"]);
 
   const filteredData = d3Data.filter(
     (d) => formatTime(d.month) === formatTime(hoveredPoint[0])
@@ -189,7 +189,7 @@ const ConsumiFasce = ({ d3Data, svgWidth, svgHeight }) => {
                       transform={`translate(${innerWidth / 2},-20)`}
                       textAnchor="middle"
                     >
-                      Andamento consumi per fasce (kWh) - anno {item[0]}
+                      Andamento consumi mensili per fasce (kWh) - anno {item[0]}
                     </text>
                     {/* <text
                       transform={`translate(-60,${

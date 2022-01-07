@@ -1,4 +1,11 @@
-import { extent, scaleLinear, format, timeFormat, groups } from "d3";
+import {
+  extent,
+  scaleLinear,
+  format,
+  timeFormat,
+  groups,
+  scaleOrdinal,
+} from "d3";
 
 import { useState } from "react";
 
@@ -15,8 +22,8 @@ const formatNumber = format(",d");
 const formatTime = timeFormat("%b");
 
 const PiccoConsumi = ({ svgWidth, svgHeight, d3Data }) => {
-  const svgWidthPiccoConsumi = 300;
-  const svgHeightPiccoConsumi = 300;
+  const svgWidthPiccoConsumi = 250;
+  const svgHeightPiccoConsumi = 250;
   const innerWidth = svgWidthPiccoConsumi - margin.left - margin.right;
   const innerHeight = svgHeightPiccoConsumi - margin.top - margin.bottom;
   const [hoveredValue, setHoveredValue] = useState(false);
@@ -30,7 +37,13 @@ const PiccoConsumi = ({ svgWidth, svgHeight, d3Data }) => {
     .range([innerHeight, 0])
     .nice();
 
+  const colorScale = scaleOrdinal()
+    .domain(d3Data.map(yearValue))
+    .range(["#e41a1c", "#377eb8", "#4daf4a"]);
+
   const groupByYear = groups(d3Data, yearValue);
+
+  console.log("groupByYear", groupByYear);
 
   const filteredData = hoveredPoint
     ? d3Data.filter((d) => formatTime(d.month) === formatTime(hoveredPoint[2]))
@@ -89,6 +102,7 @@ const PiccoConsumi = ({ svgWidth, svgHeight, d3Data }) => {
                       cx={xScale(xValue(d))}
                       cy={yScale(yValue(d))}
                       r={4}
+                      fill={colorScale(groupByYear[i][0])}
                       onMouseEnter={() => {
                         setHoveredPoint([xValue(d), yValue(d), monthValue(d)]);
                         setHoveredValue(true);

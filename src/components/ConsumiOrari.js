@@ -6,9 +6,11 @@ import {
   line,
   format,
   timeFormat,
+  scaleOrdinal,
 } from "d3";
 import { useState } from "react";
-const margin = { top: 40, right: 10, bottom: 20, left: 30 };
+import ColorLegendOrari from "./ColorLegendOrari";
+const margin = { top: 50, right: 10, bottom: 20, left: 30 };
 
 const fadeOpacity = 0.1;
 
@@ -22,8 +24,8 @@ const hourValue = (d) => d.ora;
 const kWhValue = (d) => d.kWh;
 
 const ConsumiOrari = ({ svgWidth, svgHeight, d3DataOrari }) => {
-  const svgWidthOrari = 300;
-  const svgHeightOrari = 300;
+  const svgWidthOrari = 250;
+  const svgHeightOrari = 250;
   const innerWidth = svgWidthOrari - margin.left - margin.right;
   const innerHeight = svgHeightOrari - margin.top - margin.bottom;
   const [hoveredPoint, setHoveredPoint] = useState(null);
@@ -32,27 +34,37 @@ const ConsumiOrari = ({ svgWidth, svgHeight, d3DataOrari }) => {
   const rollupData = rollups(
     d3DataOrari,
     (v) => Math.round(mean(v, kWhValue)),
+    yearValue,
     monthValue,
     giornoTipoValue,
     hourValue
   );
 
-  const orderedRollupData = rollupData.map((el) => {
-    if (el[1][0][0] === "saturday") {
-      let newArray = [];
-      let newElement = [];
-      newArray = [el[1][2], el[1][0], el[1][1]];
-      newElement = [el[0], newArray];
+  console.log("rollupData", rollupData);
 
-      return newElement;
-    } else if (el[1][0][0] === "sunday") {
-      let newArray = [];
-      let newElement = [];
-      newArray = [el[1][2], el[1][1], el[1][0]];
-      newElement = [el[0], newArray];
-      return newElement;
-    } else return el;
+  //var doubledArray = array.map(nested => nested.map(element => element * 2));
+
+  const orderedRollupData = rollupData.map((year) => {
+    let newArr = year[1].map((el) => {
+      if (el[1][0][0] === "saturday") {
+        let newArray = [];
+        let newElement = [];
+        newArray = [el[1][2], el[1][0], el[1][1]];
+        newElement = [el[0], newArray];
+        return newElement;
+      } else if (el[1][0][0] === "sunday") {
+        let newArray = [];
+        let newElement = [];
+        newArray = [el[1][2], el[1][1], el[1][0]];
+        newElement = [el[0], newArray];
+        return newElement;
+      } else return el;
+    });
+
+    return [year[0], newArr];
   });
+
+  console.log("orderedRollupData", orderedRollupData);
 
   const xScale = scaleLinear()
     .domain(extent(d3DataOrari, hourValue))
@@ -67,6 +79,10 @@ const ConsumiOrari = ({ svgWidth, svgHeight, d3DataOrari }) => {
     .x((d) => xScale(d[0]))
     .y((d) => yScale(d[1]));
 
+  const colorScale = scaleOrdinal()
+    .domain(d3DataOrari.map(yearValue))
+    .range(["#e41a1c", "#377eb8", "#4daf4a"]);
+
   const filteredData = hoveredPoint
     ? d3DataOrari.filter((d) => d.ora === hoveredPoint[0])
     : d3DataOrari;
@@ -74,83 +90,103 @@ const ConsumiOrari = ({ svgWidth, svgHeight, d3DataOrari }) => {
   const sumstat = rollups(
     filteredData,
     (v) => Math.round(mean(v, kWhValue)),
+    yearValue,
     monthValue,
     giornoTipoValue,
     hourValue
   );
 
-  const orderedSumstat = sumstat.map((el) => {
-    if (el[1][0][0] === "saturday") {
-      let newArray = [];
-      let newElement = [];
-      newArray = [el[1][2], el[1][0], el[1][1]];
-      newElement = [el[0], newArray];
-
-      return newElement;
-    } else if (el[1][0][0] === "sunday") {
-      let newArray = [];
-      let newElement = [];
-      newArray = [el[1][2], el[1][1], el[1][0]];
-      newElement = [el[0], newArray];
-      return newElement;
-    } else return el;
+  const orderedSumstat = sumstat.map((year) => {
+    let newArr = year[1].map((el) => {
+      if (el[1][0][0] === "saturday") {
+        let newArray = [];
+        let newElement = [];
+        newArray = [el[1][2], el[1][0], el[1][1]];
+        newElement = [el[0], newArray];
+        return newElement;
+      } else if (el[1][0][0] === "sunday") {
+        let newArray = [];
+        let newElement = [];
+        newArray = [el[1][2], el[1][1], el[1][0]];
+        newElement = [el[0], newArray];
+        return newElement;
+      } else return el;
+    });
+    return [year[0], newArr];
   });
+
+  let z = 0;
 
   return (
     <>
-      <div className="cocktails-center">
-        {orderedRollupData.map((m, ind) => {
+      {orderedRollupData.map((year, k) => {
+        return year[1].map((month, ind) => {
+          z = z + 1;
           return (
-            <div key={ind} className="cocktail">
-              {orderedRollupData[ind][1].map((item, indice) => {
-                return (
-                  <svg
-                    width={svgWidthOrari}
-                    height={svgHeightOrari}
-                    key={indice}
-                  >
-                    <g
-                      transform={`translate(${margin.left},${margin.top})`}
-                      className="tick"
-                    >
-                      {xScale.ticks().map((tickValue, index) => {
-                        return (
-                          <g
-                            transform={`translate(${xScale(
-                              tickValue
-                            )},${innerHeight})`}
-                            key={index}
-                            className="tick-text"
-                          >
-                            <text
-                              textAnchor="middle"
-                              alignmentBaseline="hanging"
+            z < 13 && (
+              <div key={ind} className="cocktail">
+                {month[1].map((giornoTipo, j) => {
+                  return (
+                    <svg width={svgWidthOrari} height={svgHeightOrari} key={j}>
+                      <g
+                        transform={`translate(${margin.left},${margin.top})`}
+                        className="tick"
+                      >
+                        {xScale.ticks().map((tickValue, index) => {
+                          return (
+                            <g
+                              transform={`translate(${xScale(
+                                tickValue
+                              )},${innerHeight})`}
+                              key={index}
+                              className="tick-text"
                             >
-                              {formatNumber(tickValue)}
-                            </text>
-                          </g>
-                        );
-                      })}
-                      {yScale.ticks().map((tickValue, index) => {
-                        return (
-                          <g
-                            transform={`translate(-10,${yScale(tickValue)})`}
-                            key={index}
-                            className="tick-text"
-                          >
-                            <line x1={10} x2={innerWidth} stroke="black"></line>
-                            <text textAnchor="end" alignmentBaseline="middle">
-                              {formatNumber(tickValue)}
-                            </text>
-                          </g>
-                        );
-                      })}
-                      <path
+                              <text
+                                textAnchor="middle"
+                                alignmentBaseline="hanging"
+                              >
+                                {formatNumber(tickValue)}
+                              </text>
+                            </g>
+                          );
+                        })}
+                        {yScale.ticks().map((tickValue, index) => {
+                          return (
+                            <g
+                              transform={`translate(-10,${yScale(tickValue)})`}
+                              key={index}
+                              className="tick-text"
+                            >
+                              <line
+                                x1={10}
+                                x2={innerWidth}
+                                stroke="black"
+                              ></line>
+                              <text textAnchor="end" alignmentBaseline="middle">
+                                {formatNumber(tickValue)}
+                              </text>
+                            </g>
+                          );
+                        })}
+
+                        {orderedRollupData.map((anno, a) => {
+                          return (
+                            anno[1][ind] && (
+                              <path
+                                key={a}
+                                stroke={colorScale(anno[0])}
+                                d={lineGenerator(anno[1][ind][1][j][1])}
+                              />
+                            )
+                          );
+                        })}
+
+                        {/* <path
                         opacity={hoveredValue ? fadeOpacity : 1}
                         stroke="black"
-                        d={lineGenerator(item[1])}
+                        d={lineGenerator(giornoTipo[1])}
                       />
-                      {item[1].map((d, index) => {
+                      {giornoTipo[1].map((d, index) => {
                         return (
                           <g
                             key={index}
@@ -170,30 +206,31 @@ const ConsumiOrari = ({ svgWidth, svgHeight, d3DataOrari }) => {
                                 setHoveredValue(false);
                               }}
                             ></circle>
-                            {/* <Tooltip
-                        hoveredPoint={hoveredPoint}
-                        xScale={xScale}
-                        yScale={yScale}
-                        colorScale={colorScale}
-                        unit="kWh"
-                      /> */}
                           </g>
                         );
-                      })}
+                      })} */}
 
-                      {/* <path d={lineGenerator(d3Data)} /> */}
-                      <text
-                        transform={`translate(${innerWidth / 2},-20)`}
-                        textAnchor="middle"
-                      >
-                        {formatTime(rollupData[ind][0])}
-                        {" - "}
-                        {item[0]}
-                      </text>
+                        <text
+                          transform={`translate(${innerWidth / 2},-30)`}
+                          textAnchor="middle"
+                        >
+                          {formatTime(month[0])}
+                          {" - "}
+                          {giornoTipo[0]}
+                        </text>
 
-                      {orderedSumstat[ind] &&
+                        <g transform={`translate(50,-15)`}>
+                          <ColorLegendOrari
+                            colorScale={colorScale}
+                            tickSpacing={45}
+                            tickTextOffset={8}
+                            tickSize={4}
+                          />
+                        </g>
+
+                        {/* {orderedSumstat[ind] &&
                         hoveredPoint &&
-                        orderedSumstat[ind][1][indice][1].map((x, i) => {
+                        orderedSumstat[ind][1][j][1].map((x, i) => {
                           return (
                             <g key={i}>
                               <text
@@ -229,15 +266,16 @@ const ConsumiOrari = ({ svgWidth, svgHeight, d3DataOrari }) => {
                               ></circle>
                             </g>
                           );
-                        })}
-                    </g>
-                  </svg>
-                );
-              })}
-            </div>
+                        })} */}
+                      </g>
+                    </svg>
+                  );
+                })}
+              </div>
+            )
           );
-        })}
-      </div>
+        });
+      })}
     </>
   );
 };

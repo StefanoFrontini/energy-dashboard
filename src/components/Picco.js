@@ -62,12 +62,16 @@ const Picco = ({ svgWidth, svgHeight, d3Data }) => {
           {yScale.ticks().map((tickValue, index) => {
             return (
               <g
-                transform={`translate(0,${yScale(tickValue)})`}
+                transform={`translate(-15,${yScale(tickValue)})`}
                 key={index}
                 className="tick"
               >
                 <line x1={10} x2={innerWidth} stroke="black"></line>
-                <text textAnchor="end" alignmentBaseline="middle">
+                <text
+                  textAnchor="end"
+                  className="axis-label"
+                  alignmentBaseline="middle"
+                >
                   {formatNumber(tickValue)}
                 </text>
               </g>
@@ -81,6 +85,7 @@ const Picco = ({ svgWidth, svgHeight, d3Data }) => {
                 alignmentBaseline="hanging"
                 textAnchor="middle"
                 key={index}
+                className="axis-label"
               >
                 {formatTime(tickValue)}
               </text>
@@ -146,27 +151,27 @@ const Picco = ({ svgWidth, svgHeight, d3Data }) => {
               </g>
             );
           })}
-          <text
+          {/* <text
             transform={`translate(${innerWidth / 2},-20)`}
             textAnchor="middle"
           >
-            Andamento picco di potenza vs potenza disponibile
-          </text>
-          <text
+            Andamento picco di potenza (kW) vs potenza disponibile (linea nera)
+          </text> */}
+          {/* <text
             transform={`translate(-60,${innerHeight / 2}) rotate(-90)`}
             textAnchor="middle"
             className="axis-label"
           >
             kW
-          </text>
-          <text
+          </text> */}
+          {/* <text
             transform={`translate(${innerWidth / 2},${innerHeight + 40})`}
             textAnchor="middle"
             alignmentBaseline="hanging"
             className="axis-label"
           >
             Time
-          </text>
+          </text> */}
           <g transform={`translate(${innerWidth + 20})`}>
             <ColorLegend
               colorScale={colorScale}

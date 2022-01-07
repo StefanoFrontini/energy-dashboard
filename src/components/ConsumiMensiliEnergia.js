@@ -6,9 +6,11 @@ import {
   line,
   groups,
   scaleOrdinal,
+  format,
+  timeFormat,
 } from "d3";
-import XAxis from "./XAxis";
-import YAxis from "./YAxis";
+/* import XAxis from "./XAxis";
+import YAxis from "./YAxis"; */
 import ColorLegend from "./ColorLegend";
 import { useState } from "react";
 import Tooltip from "./Tooltip";
@@ -18,6 +20,9 @@ const yValue = (d) => d.kWh;
 const colorValue = (d) => d.year;
 
 const fadeOpacity = 0.1;
+
+const formatNumber = format(",d");
+const formatTime = timeFormat("%b");
 
 const margin = { top: 40, right: 100, bottom: 80, left: 80 };
 
@@ -41,7 +46,7 @@ const ConsumiMensiliEnergia = ({
     .range([0, innerWidth]);
 
   const yScale = scaleLinear()
-    .domain([10000, max(d3Data, yValue)])
+    .domain([0, max(d3Data, yValue)])
     .range([innerHeight, 0]);
 
   const lineGenerator = line()
@@ -61,8 +66,40 @@ const ConsumiMensiliEnergia = ({
   return (
     <svg width={svgWidth} height={svgHeight}>
       <g transform={`translate(${margin.left},${margin.top})`}>
-        <XAxis xScale={xScale} innerHeight={innerHeight} />
-        <YAxis yScale={yScale} innerWidth={innerWidth} />
+        {yScale.ticks().map((tickValue, index) => {
+          return (
+            <g
+              transform={`translate(-15,${yScale(tickValue)})`}
+              key={index}
+              className="tick"
+            >
+              <line x1={10} x2={innerWidth} stroke="black"></line>
+              <text
+                className="axis-label"
+                textAnchor="end"
+                alignmentBaseline="middle"
+              >
+                {formatNumber(tickValue)}
+              </text>
+            </g>
+          );
+        })}
+        {xScale.ticks().map((tickValue, index) => {
+          return (
+            <text
+              x={xScale(tickValue)}
+              y={innerHeight + 24}
+              alignmentBaseline="hanging"
+              textAnchor="middle"
+              key={index}
+              className="axis-label"
+            >
+              {formatTime(tickValue)}
+            </text>
+          );
+        })}
+        {/* <XAxis xScale={xScale} innerHeight={innerHeight} />
+        <YAxis yScale={yScale} innerWidth={innerWidth} /> */}
         <g opacity={hoveredValue ? fadeOpacity : 1}>
           {groupData.map((item) => {
             return (
@@ -116,27 +153,27 @@ const ConsumiMensiliEnergia = ({
         })}
 
         {/* <path d={lineGenerator(d3Data)} /> */}
-        <text
+        {/* <text
           transform={`translate(${innerWidth / 2},-20)`}
           textAnchor="middle"
         >
-          Andamento consumi
-        </text>
-        <text
+          Andamento consumi mensili (kWh)
+        </text> */}
+        {/* <text
           transform={`translate(-60,${innerHeight / 2}) rotate(-90)`}
           textAnchor="middle"
           className="axis-label"
         >
           kWh
-        </text>
-        <text
+        </text> */}
+        {/* <text
           transform={`translate(${innerWidth / 2},${innerHeight + 40})`}
           textAnchor="middle"
           alignmentBaseline="hanging"
           className="axis-label"
         >
           Time
-        </text>
+        </text> */}
         <g transform={`translate(${innerWidth + 20})`}>
           <ColorLegend
             colorScale={colorScale}
