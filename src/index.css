@@ -123,7 +123,7 @@ p {
 /*  global classes */
 
 /* section */
-.section {
+/* .section {
   width: 90vw;
   margin: 0 auto;
   max-width: var(--max-width);
@@ -133,7 +133,7 @@ p {
   .section {
     width: 95vw;
   }
-}
+} */
 
 .sidebar-toggle {
   position: fixed;
@@ -501,14 +501,8 @@ Dashboard
 */
 
 section {
-  padding-left: 2rem;
-}
-
-.main {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
+  text-align: center;
+  padding-top: 3rem;
 }
 
 /* .cocktails-center {
@@ -538,6 +532,8 @@ Cocktail
   /* display: grid;
   grid-template-rows: auto 1fr; */
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   margin-bottom: 2rem;
 }
 
@@ -633,13 +629,20 @@ Print
  */
 
 @media print {
-  .page-break-mensili {
-    margin-bottom: 30rem;
+  .page-break {
+    break-before: always;
+    padding-top: 3rem;
   }
-  .page-break-fasce {
-    margin-bottom: 15rem;
+  section {
+    padding-top: 1rem;
   }
-  .page-break-picco {
-    margin-bottom: 16rem;
+  section:nth-child(1) h3 {
+    margin-top: 4rem;
+  }
+  section img {
+    margin-top: 3rem;
+  }
+  section:nth-child(4) h3 {
+    margin-top: 4rem;
   }
 }

@@ -189,7 +189,7 @@ const ConsumiFasce = ({ d3Data, svgWidth, svgHeight }) => {
                       transform={`translate(${innerWidth / 2},-20)`}
                       textAnchor="middle"
                     >
-                      Andamento consumi mensili per fasce (kWh) - anno {item[0]}
+                      {item[0]}
                     </text>
                     {/* <text
                       transform={`translate(-60,${

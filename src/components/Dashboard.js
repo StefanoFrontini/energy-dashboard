@@ -48,83 +48,88 @@ const Dashboard = React.forwardRef((props, ref) => {
         </p>
       </section>
       <main className="main">
-        <h4>Andamento consumi mensili (kWh)</h4>
-        {podData.d3Data && (
-          <ConsumiMensiliEnergia
-            {...podData}
-            svgWidth={svgWidth}
-            svgHeight={svgHeight}
+        <section>
+          <h3>Andamento consumi mensili (kWh)</h3>
+          {podData.d3Data && (
+            <ConsumiMensiliEnergia
+              {...podData}
+              svgWidth={svgWidth}
+              svgHeight={svgHeight}
+            />
+          )}
+
+          <article className="ok">
+            <ReactMarkdown>{podData.mensiliCommento}</ReactMarkdown>
+          </article>
+          <div className="page-break"></div>
+        </section>
+
+        <section>
+          <h3>Andamento consumi mensili per fasce (kWh)</h3>
+
+          {podData.d3Data && (
+            <ConsumiFasce
+              {...podData}
+              svgWidth={svgWidth}
+              svgHeight={svgHeight}
+            />
+          )}
+          <article className="ok">
+            <ReactMarkdown>{podData.fasceCommento}</ReactMarkdown>
+          </article>
+
+          <img
+            src="https://res.cloudinary.com/stefano75/image/upload/v1641728180/fasce-orarie-arera-min_vrc0o8.png"
+            alt="fasce orarie arera"
+            width="600"
+            height="127"
           />
-        )}
 
-        <article className="ok">
-          <ReactMarkdown>{podData.mensiliCommento}</ReactMarkdown>
-        </article>
+          <div className="page-break"></div>
+        </section>
 
-        <div className="page-break-mensili"></div>
+        <section>
+          <h3>Picco di potenza (kW) e Potenza disponibile (linea nera)</h3>
 
-        {podData.d3Data && (
-          <ConsumiFasce
-            {...podData}
-            svgWidth={svgWidth}
-            svgHeight={svgHeight}
-          />
-        )}
+          {podData.d3Data && (
+            <Picco {...podData} svgWidth={svgWidth} svgHeight={svgHeight} />
+          )}
 
-        <img
-          src="https://res.cloudinary.com/stefano75/image/upload/v1641320028/fasce-orarie-arera_bsyxam.png"
-          alt="fasce orarie arera"
-          width="657"
-          height="215"
-        />
+          <article className="ok">
+            <ReactMarkdown>{podData.piccoCommento}</ReactMarkdown>
+          </article>
+        </section>
+        <section>
+          <h3>Picco di potenza (kW) e consumi mensili (kWh)</h3>
 
-        <article className="ok">
-          <ReactMarkdown>{podData.fasceCommento}</ReactMarkdown>
-        </article>
+          {podData.d3Data && (
+            <PiccoConsumi
+              {...podData}
+              svgWidth={svgWidth}
+              svgHeight={svgHeight}
+            />
+          )}
 
-        <div className="page-break-fasce"></div>
+          <article className="ok">
+            <ReactMarkdown>{podData.piccoConsumiCommento}</ReactMarkdown>
+          </article>
+          <div className="page-break"></div>
+        </section>
+        <section>
+          <h3>Consumi orari (kWh)</h3>
 
-        <h4>
-          Andamento picco di potenza (kW) vs potenza disponibile (linea nera)
-        </h4>
+          {podData.d3DataOrari && (
+            <ConsumiOrari
+              {...podData}
+              svgWidth={svgWidth}
+              svgHeight={svgHeight}
+            />
+          )}
 
-        {podData.d3Data && (
-          <Picco {...podData} svgWidth={svgWidth} svgHeight={svgHeight} />
-        )}
-
-        <article className="ok">
-          <ReactMarkdown>{podData.piccoCommento}</ReactMarkdown>
-        </article>
-
-        <h4>Picco di potenza (kW) e consumi mensili (kWh)</h4>
-
-        {podData.d3Data && (
-          <PiccoConsumi
-            {...podData}
-            svgWidth={svgWidth}
-            svgHeight={svgHeight}
-          />
-        )}
-
-        <article className="ok">
-          <ReactMarkdown>{podData.piccoConsumiCommento}</ReactMarkdown>
-        </article>
-
-        <div className="page-break-picco"></div>
-
-        <h4>Consumi orari (kWh)</h4>
-
-        {podData.d3DataOrari && (
-          <ConsumiOrari
-            {...podData}
-            svgWidth={svgWidth}
-            svgHeight={svgHeight}
-          />
-        )}
-
-        <article className="ok">
-          <ReactMarkdown>{podData.orariCommento}</ReactMarkdown>
-        </article>
+          <article className="ok">
+            <ReactMarkdown>{podData.orariCommento}</ReactMarkdown>
+          </article>
+        </section>
       </main>
     </div>
   );

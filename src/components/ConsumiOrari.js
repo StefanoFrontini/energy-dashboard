@@ -123,7 +123,169 @@ const ConsumiOrari = ({ svgWidth, svgHeight, d3DataOrari }) => {
         return year[1].map((month, ind) => {
           z = z + 1;
           return (
-            z < 13 && (
+            z < 13 &&
+            (((z === 5) | (z === 9) && (
+              <div key={ind}>
+                <div className="page-break"></div>
+                <div className="cocktail">
+                  {month[1].map((giornoTipo, j) => {
+                    return (
+                      <svg
+                        width={svgWidthOrari}
+                        height={svgHeightOrari}
+                        key={j}
+                      >
+                        <g
+                          transform={`translate(${margin.left},${margin.top})`}
+                          className="tick"
+                        >
+                          {xScale.ticks().map((tickValue, index) => {
+                            return (
+                              <g
+                                transform={`translate(${xScale(
+                                  tickValue
+                                )},${innerHeight})`}
+                                key={index}
+                                className="tick-text"
+                              >
+                                <text
+                                  textAnchor="middle"
+                                  alignmentBaseline="hanging"
+                                >
+                                  {formatNumber(tickValue)}
+                                </text>
+                              </g>
+                            );
+                          })}
+                          {yScale.ticks().map((tickValue, index) => {
+                            return (
+                              <g
+                                transform={`translate(-10,${yScale(
+                                  tickValue
+                                )})`}
+                                key={index}
+                                className="tick-text"
+                              >
+                                <line
+                                  x1={10}
+                                  x2={innerWidth}
+                                  stroke="black"
+                                ></line>
+                                <text
+                                  textAnchor="end"
+                                  alignmentBaseline="middle"
+                                >
+                                  {formatNumber(tickValue)}
+                                </text>
+                              </g>
+                            );
+                          })}
+
+                          {orderedRollupData.map((anno, a) => {
+                            return (
+                              anno[1][ind] && (
+                                <path
+                                  key={a}
+                                  stroke={colorScale(anno[0])}
+                                  d={lineGenerator(anno[1][ind][1][j][1])}
+                                />
+                              )
+                            );
+                          })}
+
+                          {/* <path
+                        opacity={hoveredValue ? fadeOpacity : 1}
+                        stroke="black"
+                        d={lineGenerator(giornoTipo[1])}
+                      />
+                      {giornoTipo[1].map((d, index) => {
+                        return (
+                          <g
+                            key={index}
+                            opacity={hoveredValue ? fadeOpacity : 1}
+                          >
+                            <circle
+                              cx={xScale(d[0])}
+                              cy={yScale(d[1])}
+                              r={4}
+                              fill="black"
+                              onMouseEnter={() => {
+                                setHoveredPoint([d[0], d[1]]);
+                                setHoveredValue(true);
+                              }}
+                              onMouseOut={() => {
+                                setHoveredPoint(null);
+                                setHoveredValue(false);
+                              }}
+                            ></circle>
+                          </g>
+                        );
+                      })} */}
+
+                          <text
+                            transform={`translate(${innerWidth / 2},-30)`}
+                            textAnchor="middle"
+                          >
+                            {formatTime(month[0])}
+                            {" - "}
+                            {giornoTipo[0]}
+                          </text>
+
+                          <g transform={`translate(50,-15)`}>
+                            <ColorLegendOrari
+                              colorScale={colorScale}
+                              tickSpacing={45}
+                              tickTextOffset={8}
+                              tickSize={4}
+                            />
+                          </g>
+
+                          {/* {orderedSumstat[ind] &&
+                        hoveredPoint &&
+                        orderedSumstat[ind][1][j][1].map((x, i) => {
+                          return (
+                            <g key={i}>
+                              <text
+                                dx={xScale(x[0])}
+                                dy={yScale(x[1]) - 10}
+                                fill="black"
+                                textAnchor="middle"
+                                className="tooltip"
+                              >
+                                {x[1]} kWh
+                              </text>
+                              <text
+                                dx={xScale(x[0])}
+                                dy={yScale(x[1]) - 20}
+                                fill="black"
+                                textAnchor="middle"
+                                className="tooltip"
+                              >
+                                ora {x[0]}
+                              </text>
+                              <circle
+                                cx={xScale(x[0])}
+                                cy={yScale(x[1])}
+                                r={4}
+                                onMouseEnter={() => {
+                                  setHoveredPoint([x[0], x[1]]);
+                                  setHoveredValue(true);
+                                }}
+                                onMouseOut={() => {
+                                  setHoveredPoint(null);
+                                  setHoveredValue(false);
+                                }}
+                              ></circle>
+                            </g>
+                          );
+                        })} */}
+                        </g>
+                      </svg>
+                    );
+                  })}
+                </div>
+              </div>
+            )) || (
               <div key={ind} className="cocktail">
                 {month[1].map((giornoTipo, j) => {
                   return (
@@ -272,7 +434,7 @@ const ConsumiOrari = ({ svgWidth, svgHeight, d3DataOrari }) => {
                   );
                 })}
               </div>
-            )
+            ))
           );
         });
       })}
