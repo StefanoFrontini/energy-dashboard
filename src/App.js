@@ -14,7 +14,11 @@ const App = () => {
     <>
       <Navbar />
       <Dashboard ref={componentRef} />
-      <button onClick={handlePrint}>Print this out!</button>
+      <section>
+        <button className="btn" onClick={handlePrint}>
+          Print this out!
+        </button>
+      </section>
       <Modal />
       <Sidebar />
     </>

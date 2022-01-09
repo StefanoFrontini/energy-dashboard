@@ -61,6 +61,7 @@ const Dashboard = React.forwardRef((props, ref) => {
           <article className="ok">
             <ReactMarkdown>{podData.mensiliCommento}</ReactMarkdown>
           </article>
+          <div id="pageFooter"></div>
           <div className="page-break"></div>
         </section>
 
@@ -84,7 +85,7 @@ const Dashboard = React.forwardRef((props, ref) => {
             width="600"
             height="127"
           />
-
+          <div id="pageFooter"></div>
           <div className="page-break"></div>
         </section>
 
@@ -113,6 +114,7 @@ const Dashboard = React.forwardRef((props, ref) => {
           <article className="ok">
             <ReactMarkdown>{podData.piccoConsumiCommento}</ReactMarkdown>
           </article>
+          <div id="pageFooter"></div>
           <div className="page-break"></div>
         </section>
         <section>
@@ -129,6 +131,7 @@ const Dashboard = React.forwardRef((props, ref) => {
           <article className="ok">
             <ReactMarkdown>{podData.orariCommento}</ReactMarkdown>
           </article>
+          <div id="pageFooter"></div>
         </section>
       </main>
     </div>

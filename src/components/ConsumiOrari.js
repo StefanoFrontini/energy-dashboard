@@ -126,6 +126,7 @@ const ConsumiOrari = ({ svgWidth, svgHeight, d3DataOrari }) => {
             z < 13 &&
             (((z === 5) | (z === 9) && (
               <div key={ind}>
+                <div id="pageFooter"></div>
                 <div className="page-break"></div>
                 <div className="cocktail">
                   {month[1].map((giornoTipo, j) => {

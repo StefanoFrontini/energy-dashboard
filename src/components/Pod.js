@@ -1,7 +1,6 @@
 import { GiElectric } from "react-icons/gi";
 import { BsArrowReturnRight } from "react-icons/bs";
 import { useGlobalContext } from "../context";
-import React from "react";
 
 const Pod = ({ id, attributes }) => {
   const { getPodId } = useGlobalContext();
