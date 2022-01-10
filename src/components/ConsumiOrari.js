@@ -55,7 +55,7 @@ const ConsumiOrari = ({ svgWidth, svgHeight, d3DataOrari }) => {
       } else if (el[1][0][0] === "sunday") {
         let newArray = [];
         let newElement = [];
-        newArray = [el[1][2], el[1][1], el[1][0]];
+        newArray = [el[1][1], el[1][2], el[1][0]];
         newElement = [el[0], newArray];
         return newElement;
       } else return el;

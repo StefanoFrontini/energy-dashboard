@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState, useEffect, useCallback } from "react";
+import { timeParse } from "d3";
 
 const graphQlUrl = "http://localhost:1337/graphql";
 
@@ -8,6 +9,7 @@ const GET_PDR_DATA = `query ($id: ID!){
     data{
       id
       attributes{
+        pdrId
         indirizzo
         consumiMensili
         mensiliCommento
@@ -24,6 +26,23 @@ const GET_PDR_DATA = `query ($id: ID!){
     }
   }
 }`;
+
+const parseTime = timeParse("%m");
+
+// const parseDate = timeParse("%Y-%m-%dT%H:%M:%S.%LZ");
+
+const transform = (x) => {
+  const transformedData = x.map((item) => {
+    return {
+      smc: Math.round(item.smc),
+      //date: parseTime(`${item.anno.toString()}, ${item.Mese.toString()}`),
+      // date: parseDate(item.date),
+      year: item.anno.toString(),
+      month: parseTime(item.mese.toString()),
+    };
+  });
+  return transformedData;
+};
 
 const usePdrData = () => {
   const [data, setData] = useState([]);
@@ -50,7 +69,16 @@ const usePdrData = () => {
       });
 
       if (data) {
-        setData(data);
+        const rawData = {
+          ragioneSociale:
+            data.attributes.azienda.data.attributes.ragioneSociale,
+          pdr: data.attributes.pdrId,
+          indirizzo: data.attributes.indirizzo,
+          mensiliCommento: data.attributes.mensiliCommento,
+          d3Data: transform(data.attributes.consumiMensili.data),
+        };
+
+        setData(rawData);
         setLoadingPdrData(false);
       } else {
         setData([]);

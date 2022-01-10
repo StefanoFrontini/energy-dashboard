@@ -1,7 +1,7 @@
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./components/Dashboard";
 import Navbar from "./components/Navbar";
-import Modal from "./components/Modal";
+// import Modal from "./components/Modal";
 import { useReactToPrint } from "react-to-print";
 import { useRef } from "react";
 
@@ -19,7 +19,7 @@ const App = () => {
           Print this out!
         </button>
       </section>
-      <Modal />
+      {/* <Modal /> */}
       <Sidebar />
     </>
   );

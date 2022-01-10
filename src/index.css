@@ -625,14 +625,17 @@ Print
   section img {
     margin-top: 3rem;
   }
-  section:nth-child(1) #pageFooter {
-    margin-top: 15rem;
-  }
   section:nth-child(2) #pageFooter {
+    margin-top: 16rem;
+  }
+  section:nth-child(3) #pageFooter {
     margin-top: 14rem;
   }
-  section:nth-child(4) #pageFooter {
-    margin-top: 14rem;
+  section:nth-child(5) #pageFooter {
+    margin-top: 13rem;
+  }
+  section:nth-child(8) #pageFooter {
+    margin-top: 30rem;
   }
 
   #pageFooter {

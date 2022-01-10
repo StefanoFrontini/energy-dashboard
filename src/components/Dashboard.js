@@ -1,6 +1,7 @@
 import { useGlobalContext } from "../context";
 import Loading from "./Loading";
 import ConsumiMensiliEnergia from "./ConsumiMensiliEnergia";
+import ConsumiMensiliGas from "./ConsumiMensiliGas";
 import ConsumiFasce from "./ConsumiFasce";
 import Picco from "./Picco";
 import PiccoConsumi from "./PiccoConsumi";
@@ -36,18 +37,19 @@ const Dashboard = React.forwardRef((props, ref) => {
   return (
     <div ref={ref}>
       <Header />
-      <section>
-        <p>
-          {podData.ragioneSociale}
-          <br></br>
-          {podData.pod && `pod: ${podData.pod}`}
-          <br></br>
-          {podData.indirizzo && `indirizzo pod: ${podData.indirizzo}`}
-          <br></br>
-          Periodo: Gennaio 2019 - Luglio 2021<br></br>Report del {formattedDate}
-        </p>
-      </section>
       <main className="main">
+        <section>
+          <p>
+            {podData.ragioneSociale}
+            <br></br>
+            {podData.pod && `pod: ${podData.pod}`}
+            <br></br>
+            {podData.indirizzo && `indirizzo pod: ${podData.indirizzo}`}
+            <br></br>
+            Periodo: Gennaio 2019 - Luglio 2021<br></br>Report del{" "}
+            {formattedDate}
+          </p>
+        </section>
         <section>
           <h3>Andamento consumi mensili (kWh)</h3>
           {podData.d3Data && (
@@ -132,6 +134,35 @@ const Dashboard = React.forwardRef((props, ref) => {
             <ReactMarkdown>{podData.orariCommento}</ReactMarkdown>
           </article>
           <div id="pageFooter"></div>
+          <div className="page-break"></div>
+        </section>
+        <section>
+          <p>
+            {pdrData.ragioneSociale}
+            <br></br>
+            {pdrData.pdr && `pdr: ${pdrData.pdr}`}
+            <br></br>
+            {pdrData.indirizzo && `indirizzo pdr: ${pdrData.indirizzo}`}
+            <br></br>
+            Periodo: Gennaio 2019 - Luglio 2021<br></br>Report del{" "}
+            {formattedDate}
+          </p>
+        </section>
+        <section>
+          <h3>Andamento consumi mensili gas (Smc)</h3>
+          {pdrData.d3Data && (
+            <ConsumiMensiliGas
+              {...pdrData}
+              svgWidth={svgWidth}
+              svgHeight={svgHeight}
+            />
+          )}
+
+          <article className="ok">
+            <ReactMarkdown>{pdrData.mensiliCommento}</ReactMarkdown>
+          </article>
+          <div id="pageFooter"></div>
+          <div className="page-break"></div>
         </section>
       </main>
     </div>
