@@ -433,6 +433,11 @@ nav {
   }
 }
 
+.loader-container {
+  width: 100vw;
+  height: 100vh;
+}
+
 .loader,
 .loader:before,
 .loader:after {

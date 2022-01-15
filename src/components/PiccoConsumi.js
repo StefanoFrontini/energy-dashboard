@@ -9,51 +9,9 @@ import {
 } from "d3";
 
 import { useState } from "react";
+import locale from "./locale";
 
-timeFormatDefaultLocale({
-  dateTime: "%A %e %B %Y, %X",
-  date: "%d/%m/%Y",
-  time: "%H:%M:%S",
-  periods: ["AM", "PM"],
-  days: [
-    "Domenica",
-    "Lunedì",
-    "Martedì",
-    "Mercoledì",
-    "Giovedì",
-    "Venerdì",
-    "Sabato",
-  ],
-  shortDays: ["Dom", "Lun", "Mar", "Mer", "Gio", "Ven", "Sab"],
-  months: [
-    "Gennaio",
-    "Febbraio",
-    "Marzo",
-    "Aprile",
-    "Maggio",
-    "Giugno",
-    "Luglio",
-    "Agosto",
-    "Settembre",
-    "Ottobre",
-    "Novembre",
-    "Dicembre",
-  ],
-  shortMonths: [
-    "Gen",
-    "Feb",
-    "Mar",
-    "Apr",
-    "Mag",
-    "Giu",
-    "Lug",
-    "Ago",
-    "Set",
-    "Ott",
-    "Nov",
-    "Dic",
-  ],
-});
+timeFormatDefaultLocale(locale);
 
 const xValue = (d) => d.kWh;
 const yValue = (d) => d.picco;
@@ -141,14 +99,14 @@ const PiccoConsumi = ({ svgWidth, svgHeight, d3Data }) => {
                   </g>
                 );
               })}
-              {groupByYear[i][1].map((d) => {
+              {item[1].map((d, s) => {
                 return (
-                  <g key={xValue(d)} opacity={hoveredValue ? fadeOpacity : 1}>
+                  <g key={s} opacity={hoveredValue ? fadeOpacity : 1}>
                     <circle
                       cx={xScale(xValue(d))}
                       cy={yScale(yValue(d))}
                       r={4}
-                      fill={colorScale(groupByYear[i][0])}
+                      fill={colorScale(item[0])}
                       onMouseEnter={() => {
                         setHoveredPoint([xValue(d), yValue(d), monthValue(d)]);
                         setHoveredValue(true);

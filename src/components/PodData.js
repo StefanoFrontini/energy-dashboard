@@ -108,7 +108,6 @@ const usePodData = () => {
             data.attributes.consumiOrari &&
             transformOrari(data.attributes.consumiOrari.data),
         };
-        console.log("rawData", rawData);
 
         setData(rawData);
         setLoadingPodData(false);

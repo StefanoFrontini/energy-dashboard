@@ -9,9 +9,9 @@ const Sidebar = () => {
   // if (loading) {
   //   return <Loading />;
   // }
-  if (aziendas.length < 1) {
-    return <h2 className="section-title">no aziendas</h2>;
-  }
+  // if (aziendas.length < 1) {
+  //   return <h2 className="section-title">no aziendas</h2>;
+  // }
   return (
     <aside className={`${isSidebarOpen ? "sidebar show-sidebar" : "sidebar"}`}>
       <div className="sidebar-header">
