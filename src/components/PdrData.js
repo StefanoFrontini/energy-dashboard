@@ -46,7 +46,7 @@ const transform = (x) => {
 
 const usePdrData = () => {
   const [data, setData] = useState([]);
-  const [pdrId, setPdrId] = useState("1");
+  const [pdrId, setPdrId] = useState(null);
   const [loadingPdrData, setLoadingPdrData] = useState(false);
   const fetchPdr = useCallback(async () => {
     let variables = {};

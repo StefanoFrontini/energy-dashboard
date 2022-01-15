@@ -46,7 +46,7 @@ const Dashboard = React.forwardRef((props, ref) => {
             <br></br>
             {podData.indirizzo && `indirizzo pod: ${podData.indirizzo}`}
             <br></br>
-            Periodo: Gennaio 2019 - Luglio 2021<br></br>Report del{" "}
+            Periodo: Gennaio 2019 - Dicembre 2021<br></br>Report del{" "}
             {formattedDate}
           </p>
         </section>
@@ -103,7 +103,7 @@ const Dashboard = React.forwardRef((props, ref) => {
           </article>
         </section>
         <section>
-          <h3>Picco di potenza (kW) e consumi mensili (kWh)</h3>
+          <h3>Picco di potenza (kW) e Consumi mensili (kWh)</h3>
 
           {podData.d3Data && (
             <PiccoConsumi
@@ -120,14 +120,15 @@ const Dashboard = React.forwardRef((props, ref) => {
           <div className="page-break"></div>
         </section>
         <section>
-          <h3>Consumi orari (kWh)</h3>
-
           {podData.d3DataOrari && (
-            <ConsumiOrari
-              {...podData}
-              svgWidth={svgWidth}
-              svgHeight={svgHeight}
-            />
+            <>
+              <h3>Consumi orari (kWh)</h3>
+              <ConsumiOrari
+                {...podData}
+                svgWidth={svgWidth}
+                svgHeight={svgHeight}
+              />
+            </>
           )}
 
           <article className="ok">
@@ -137,32 +138,35 @@ const Dashboard = React.forwardRef((props, ref) => {
           <div className="page-break"></div>
         </section>
         <section>
-          <p>
-            {pdrData.ragioneSociale}
-            <br></br>
-            {pdrData.pdr && `pdr: ${pdrData.pdr}`}
-            <br></br>
-            {pdrData.indirizzo && `indirizzo pdr: ${pdrData.indirizzo}`}
-            <br></br>
-            Periodo: Gennaio 2019 - Luglio 2021<br></br>Report del{" "}
-            {formattedDate}
-          </p>
+          {pdrData.d3Data && (
+            <p>
+              {pdrData.ragioneSociale}
+              <br></br>
+              {pdrData.pdr && `pdr: ${pdrData.pdr}`}
+              <br></br>
+              {pdrData.indirizzo && `indirizzo pdr: ${pdrData.indirizzo}`}
+              <br></br>
+              Periodo: Gennaio 2019 - Luglio 2021<br></br>Report del{" "}
+              {formattedDate}
+            </p>
+          )}
         </section>
         <section>
-          <h3>Andamento consumi mensili gas (Smc)</h3>
           {pdrData.d3Data && (
-            <ConsumiMensiliGas
-              {...pdrData}
-              svgWidth={svgWidth}
-              svgHeight={svgHeight}
-            />
+            <>
+              <h3>Andamento consumi mensili gas (Smc)</h3>
+              <ConsumiMensiliGas
+                {...pdrData}
+                svgWidth={svgWidth}
+                svgHeight={svgHeight}
+              />
+              <article className="ok">
+                <ReactMarkdown>{pdrData.mensiliCommento}</ReactMarkdown>
+              </article>
+              <div id="pageFooter"></div>
+              <div className="page-break"></div>
+            </>
           )}
-
-          <article className="ok">
-            <ReactMarkdown>{pdrData.mensiliCommento}</ReactMarkdown>
-          </article>
-          <div id="pageFooter"></div>
-          <div className="page-break"></div>
         </section>
       </main>
     </div>

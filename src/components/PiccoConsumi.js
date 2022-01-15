@@ -5,9 +5,55 @@ import {
   timeFormat,
   groups,
   scaleOrdinal,
+  timeFormatDefaultLocale,
 } from "d3";
 
 import { useState } from "react";
+
+timeFormatDefaultLocale({
+  dateTime: "%A %e %B %Y, %X",
+  date: "%d/%m/%Y",
+  time: "%H:%M:%S",
+  periods: ["AM", "PM"],
+  days: [
+    "Domenica",
+    "Lunedì",
+    "Martedì",
+    "Mercoledì",
+    "Giovedì",
+    "Venerdì",
+    "Sabato",
+  ],
+  shortDays: ["Dom", "Lun", "Mar", "Mer", "Gio", "Ven", "Sab"],
+  months: [
+    "Gennaio",
+    "Febbraio",
+    "Marzo",
+    "Aprile",
+    "Maggio",
+    "Giugno",
+    "Luglio",
+    "Agosto",
+    "Settembre",
+    "Ottobre",
+    "Novembre",
+    "Dicembre",
+  ],
+  shortMonths: [
+    "Gen",
+    "Feb",
+    "Mar",
+    "Apr",
+    "Mag",
+    "Giu",
+    "Lug",
+    "Ago",
+    "Set",
+    "Ott",
+    "Nov",
+    "Dic",
+  ],
+});
 
 const xValue = (d) => d.kWh;
 const yValue = (d) => d.picco;
@@ -43,7 +89,7 @@ const PiccoConsumi = ({ svgWidth, svgHeight, d3Data }) => {
 
   const groupByYear = groups(d3Data, yearValue);
 
-  console.log("groupByYear", groupByYear);
+  // console.log("groupByYear", groupByYear);
 
   const filteredData = hoveredPoint
     ? d3Data.filter((d) => formatTime(d.month) === formatTime(hoveredPoint[2]))

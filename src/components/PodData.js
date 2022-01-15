@@ -104,8 +104,11 @@ const usePodData = () => {
           piccoConsumiCommento: data.attributes.piccoConsumiCommento,
           orariCommento: data.attributes.orariCommento,
           d3Data: transform(data.attributes.consumiMensili.data),
-          d3DataOrari: transformOrari(data.attributes.consumiOrari.data),
+          d3DataOrari:
+            data.attributes.consumiOrari &&
+            transformOrari(data.attributes.consumiOrari.data),
         };
+        console.log("rawData", rawData);
 
         setData(rawData);
         setLoadingPodData(false);

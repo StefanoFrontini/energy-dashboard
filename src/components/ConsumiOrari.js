@@ -7,15 +7,67 @@ import {
   format,
   timeFormat,
   scaleOrdinal,
+  timeFormatDefaultLocale,
 } from "d3";
 import { useState } from "react";
 import ColorLegendOrari from "./ColorLegendOrari";
+
+timeFormatDefaultLocale({
+  dateTime: "%A %e %B %Y, %X",
+  date: "%d/%m/%Y",
+  time: "%H:%M:%S",
+  periods: ["AM", "PM"],
+  days: [
+    "Domenica",
+    "Lunedì",
+    "Martedì",
+    "Mercoledì",
+    "Giovedì",
+    "Venerdì",
+    "Sabato",
+  ],
+  shortDays: ["Dom", "Lun", "Mar", "Mer", "Gio", "Ven", "Sab"],
+  months: [
+    "Gennaio",
+    "Febbraio",
+    "Marzo",
+    "Aprile",
+    "Maggio",
+    "Giugno",
+    "Luglio",
+    "Agosto",
+    "Settembre",
+    "Ottobre",
+    "Novembre",
+    "Dicembre",
+  ],
+  shortMonths: [
+    "Gen",
+    "Feb",
+    "Mar",
+    "Apr",
+    "Mag",
+    "Giu",
+    "Lug",
+    "Ago",
+    "Set",
+    "Ott",
+    "Nov",
+    "Dic",
+  ],
+});
+
 const margin = { top: 50, right: 10, bottom: 20, left: 30 };
 
 const fadeOpacity = 0.1;
 
 const formatNumber = format(",d");
 const formatTime = timeFormat("%B");
+const formatGiornoTipo = (g) => {
+  if (g === "saturday") return "sabato";
+  else if (g === "sunday") return "domenica";
+  else return g;
+};
 
 const yearValue = (d) => d.year;
 const monthValue = (d) => d.month;
@@ -39,10 +91,6 @@ const ConsumiOrari = ({ svgWidth, svgHeight, d3DataOrari }) => {
     giornoTipoValue,
     hourValue
   );
-
-  console.log("rollupData", rollupData);
-
-  //var doubledArray = array.map(nested => nested.map(element => element * 2));
 
   const orderedRollupData = rollupData.map((year) => {
     let newArr = year[1].map((el) => {
@@ -70,6 +118,7 @@ const ConsumiOrari = ({ svgWidth, svgHeight, d3DataOrari }) => {
     .domain(extent(d3DataOrari, hourValue))
     .range([0, innerWidth])
     .nice();
+
   const yScale = scaleLinear()
     .domain(extent(d3DataOrari, kWhValue))
     .range([innerHeight, 0])
@@ -116,6 +165,12 @@ const ConsumiOrari = ({ svgWidth, svgHeight, d3DataOrari }) => {
   });
 
   let z = 0;
+
+  const findIndexYear = (mese, annoIndex) => {
+    return orderedRollupData[annoIndex][1].findIndex(
+      (m) => formatTime(m[0]) === mese
+    );
+  };
 
   return (
     <>
@@ -181,8 +236,25 @@ const ConsumiOrari = ({ svgWidth, svgHeight, d3DataOrari }) => {
                               </g>
                             );
                           })}
-
                           {orderedRollupData.map((anno, a) => {
+                            return (
+                              anno[1][
+                                findIndexYear(formatTime(month[0]), a)
+                              ] && (
+                                <path
+                                  key={a}
+                                  stroke={colorScale(anno[0])}
+                                  d={lineGenerator(
+                                    anno[1][
+                                      findIndexYear(formatTime(month[0]), a)
+                                    ][1][j][1]
+                                  )}
+                                />
+                              )
+                            );
+                          })}
+
+                          {/* {orderedRollupData.map((anno, a) => {
                             return (
                               anno[1][ind] && (
                                 <path
@@ -192,7 +264,7 @@ const ConsumiOrari = ({ svgWidth, svgHeight, d3DataOrari }) => {
                                 />
                               )
                             );
-                          })}
+                          })} */}
 
                           {/* <path
                         opacity={hoveredValue ? fadeOpacity : 1}
@@ -229,7 +301,7 @@ const ConsumiOrari = ({ svgWidth, svgHeight, d3DataOrari }) => {
                           >
                             {formatTime(month[0])}
                             {" - "}
-                            {giornoTipo[0]}
+                            {formatGiornoTipo(giornoTipo[0])}
                           </text>
 
                           <g transform={`translate(50,-15)`}>
@@ -334,11 +406,15 @@ const ConsumiOrari = ({ svgWidth, svgHeight, d3DataOrari }) => {
 
                         {orderedRollupData.map((anno, a) => {
                           return (
-                            anno[1][ind] && (
+                            anno[1][findIndexYear(formatTime(month[0]), a)] && (
                               <path
                                 key={a}
                                 stroke={colorScale(anno[0])}
-                                d={lineGenerator(anno[1][ind][1][j][1])}
+                                d={lineGenerator(
+                                  anno[1][
+                                    findIndexYear(formatTime(month[0]), a)
+                                  ][1][j][1]
+                                )}
                               />
                             )
                           );
@@ -379,7 +455,7 @@ const ConsumiOrari = ({ svgWidth, svgHeight, d3DataOrari }) => {
                         >
                           {formatTime(month[0])}
                           {" - "}
-                          {giornoTipo[0]}
+                          {formatGiornoTipo(giornoTipo[0])}
                         </text>
 
                         <g transform={`translate(50,-15)`}>

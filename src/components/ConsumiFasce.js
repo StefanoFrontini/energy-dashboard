@@ -6,11 +6,57 @@ import {
   timeFormat,
   format,
   scaleOrdinal,
+  timeFormatDefaultLocale,
 } from "d3";
 
 import ColorLegend from "./ColorLegend";
 
 import { useState } from "react";
+
+timeFormatDefaultLocale({
+  dateTime: "%A %e %B %Y, %X",
+  date: "%d/%m/%Y",
+  time: "%H:%M:%S",
+  periods: ["AM", "PM"],
+  days: [
+    "Domenica",
+    "Lunedì",
+    "Martedì",
+    "Mercoledì",
+    "Giovedì",
+    "Venerdì",
+    "Sabato",
+  ],
+  shortDays: ["Dom", "Lun", "Mar", "Mer", "Gio", "Ven", "Sab"],
+  months: [
+    "Gennaio",
+    "Febbraio",
+    "Marzo",
+    "Aprile",
+    "Maggio",
+    "Giugno",
+    "Luglio",
+    "Agosto",
+    "Settembre",
+    "Ottobre",
+    "Novembre",
+    "Dicembre",
+  ],
+  shortMonths: [
+    "Gen",
+    "Feb",
+    "Mar",
+    "Apr",
+    "Mag",
+    "Giu",
+    "Lug",
+    "Ago",
+    "Set",
+    "Ott",
+    "Nov",
+    "Dic",
+  ],
+});
 
 const formatTime = timeFormat("%b");
 
@@ -36,7 +82,7 @@ const ConsumiFasce = ({ d3Data, svgWidth, svgHeight }) => {
   const innerHeight = svgHeightFasce - margin.top - margin.bottom;
 
   const xScale = scaleBand()
-    .domain(d3Data.map(xValue))
+    .domain(d3Data.map(xValue).sort((a, b) => a - b))
     .range([0, innerWidth])
     .padding(0.5);
 
@@ -106,7 +152,7 @@ const ConsumiFasce = ({ d3Data, svgWidth, svgHeight }) => {
                   </text>
                 );
               })}
-              {groupByYear[i][1].map((d) => {
+              {item[1].map((d) => {
                 return (
                   <g key={xValue(d)}>
                     <rect
