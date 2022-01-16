@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 const graphQlUrl = "http://localhost:1337/graphql";
 
 const GET_AZIENDAS = `query {
-  aziendas{
+  aziendas(pagination: { limit: -1 }){
     data{
       id
       attributes{

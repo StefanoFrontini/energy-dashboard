@@ -310,10 +310,11 @@ Sidebar
   background: var(--clr-white);
   display: grid;
   grid-template-rows: min-content min-content min-content;
-  row-gap: 1rem;
+  row-gap: 0rem;
   box-shadow: var(--clr-red-dark);
   transition: var(--transition);
   transform: translate(-100%);
+  overflow: scroll;
 }
 .show-sidebar {
   transform: translate(0);
