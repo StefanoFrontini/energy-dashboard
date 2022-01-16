@@ -12,6 +12,8 @@ const AppProvider = ({ children }) => {
   const { data: podData, setPodId, loadingPodData } = usePodData();
   const { data: pdrData, setPdrId, loadingPdrData } = usePdrData();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [showPower, setShowPower] = useState(true);
+  const [showGas, setShowGas] = useState(true);
 
   const openSidebar = () => {
     setIsSidebarOpen(true);
@@ -22,10 +24,14 @@ const AppProvider = ({ children }) => {
   };
 
   const getPodId = (id) => {
+    setShowPower(true);
+    setShowGas(false);
     setPodId(id);
   };
 
   const getPdrId = (id) => {
+    setShowPower(false);
+    setShowGas(true);
     setPdrId(id);
   };
 
@@ -43,6 +49,8 @@ const AppProvider = ({ children }) => {
         podData,
         pdrData,
         getPdrId,
+        showPower,
+        showGas,
       }}
     >
       {children}

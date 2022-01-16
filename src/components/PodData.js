@@ -1,6 +1,9 @@
 import axios from "axios";
 import { useState, useEffect, useCallback } from "react";
-import { timeParse } from "d3";
+import { timeParse, extent, timeFormat, timeFormatDefaultLocale } from "d3";
+import locale from "./locale";
+
+timeFormatDefaultLocale(locale);
 
 const graphQlUrl = "http://localhost:1337/graphql";
 
@@ -35,6 +38,8 @@ const GET_POD_DATA = `query ($id: ID!){
 const parseTime = timeParse("%m");
 
 const parseDate = timeParse("%Y-%m-%dT%H:%M:%S.%LZ");
+
+const formatTime = timeFormat("%B %Y");
 
 const transformOrari = (x) => {
   const transformedData = x.map((item) => {
@@ -93,6 +98,11 @@ const usePodData = () => {
       });
 
       if (data) {
+        const dataset = transform(data.attributes.consumiMensili.data);
+        const domain = extent(dataset, (d) => d.date);
+        const start = formatTime(domain[0]);
+        const end = formatTime(domain[1]);
+
         const rawData = {
           ragioneSociale:
             data.attributes.azienda.data.attributes.ragioneSociale,
@@ -107,6 +117,8 @@ const usePodData = () => {
           d3DataOrari:
             data.attributes.consumiOrari &&
             transformOrari(data.attributes.consumiOrari.data),
+          inizioPeriodo: start,
+          finePeriodo: end,
         };
 
         setData(rawData);
