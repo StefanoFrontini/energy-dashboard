@@ -66,7 +66,7 @@ const PiccoConsumi = ({ svgWidth, svgHeight, d3Data }) => {
               transform={`translate(${margin.left},${margin.top})`}
               className="tick"
             >
-              {xScale.ticks(5).map((tickValue, index) => {
+              {xScale.ticks(4).map((tickValue, index) => {
                 return (
                   <g
                     transform={`translate(${xScale(tickValue)},${innerHeight})`}

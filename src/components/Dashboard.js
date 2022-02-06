@@ -64,7 +64,7 @@ const Dashboard = React.forwardRef((props, ref) => {
                 />
               )}
 
-              <article className="ok">
+              <article className="warning">
                 <ReactMarkdown>{podData.mensiliCommento}</ReactMarkdown>
               </article>
               <div id="pageFooter"></div>
@@ -81,7 +81,7 @@ const Dashboard = React.forwardRef((props, ref) => {
                   svgHeight={svgHeight}
                 />
               )}
-              <article className="ok">
+              <article className="warning">
                 <ReactMarkdown>{podData.fasceCommento}</ReactMarkdown>
               </article>
 
@@ -102,7 +102,7 @@ const Dashboard = React.forwardRef((props, ref) => {
                 <Picco {...podData} svgWidth={svgWidth} svgHeight={svgHeight} />
               )}
 
-              <article className="ok">
+              <article className="warning">
                 <ReactMarkdown>{podData.piccoCommento}</ReactMarkdown>
               </article>
             </section>
@@ -117,7 +117,7 @@ const Dashboard = React.forwardRef((props, ref) => {
                 />
               )}
 
-              <article className="ok">
+              <article className="warning">
                 <ReactMarkdown>{podData.piccoConsumiCommento}</ReactMarkdown>
               </article>
               <div id="pageFooter"></div>
@@ -135,7 +135,7 @@ const Dashboard = React.forwardRef((props, ref) => {
                 </>
               )}
 
-              <article className="ok">
+              <article className="warning">
                 <ReactMarkdown>{podData.orariCommento}</ReactMarkdown>
               </article>
               <div id="pageFooter"></div>

@@ -73,7 +73,7 @@ const ConsumiFasce = ({ d3Data, svgWidth, svgHeight }) => {
     <>
       {groupByYear.map((item, i) => {
         return (
-          <svg width={svgWidthFasce} height={svgHeightFasce} key={item[0]}>
+          <svg viewBox={`0 0 ${svgWidthFasce} ${svgHeightFasce}`} key={item[0]}>
             <g
               transform={`translate(${margin.left},${margin.top})`}
               className="tick"

@@ -67,7 +67,7 @@ const ConsumiMensiliGas = ({
   const sumstat = groups(filteredData, colorValue);
 
   return (
-    <svg width={svgWidth} height={svgHeight}>
+    <svg viewBox={`0 0 ${svgWidth} ${svgHeight}`}>
       <g transform={`translate(${margin.left},${margin.top})`}>
         {yScale.ticks().map((tickValue, index) => {
           return (

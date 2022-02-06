@@ -87,7 +87,8 @@ const ConsumiOrari = ({ svgWidth, svgHeight, d3DataOrari }) => {
     .y((d) => yScale(d[1]));
 
   const colorScale = scaleOrdinal()
-    .domain(d3DataOrari.map(yearValue))
+    .domain(["2019", "2020", "2021"])
+    // .domain(d3DataOrari.map(yearValue))
     .range(["#e41a1c", "#377eb8", "#4daf4a"]);
 
   const filteredData = hoveredPoint

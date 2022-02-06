@@ -1,26 +1,19 @@
-import Sidebar from "./components/Sidebar";
-import Dashboard from "./components/Dashboard";
+import { DashboardPage, Login, Error } from "./pages";
 import Navbar from "./components/Navbar";
 // import Modal from "./components/Modal";
-import { useReactToPrint } from "react-to-print";
-import { useRef } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 const App = () => {
-  const componentRef = useRef();
-  const handlePrint = useReactToPrint({
-    content: () => componentRef.current,
-  });
   return (
     <>
       <Navbar />
-      <Dashboard ref={componentRef} />
-      <section>
-        <button className="btn" onClick={handlePrint}>
-          Print this out!
-        </button>
-      </section>
-      {/* <Modal /> */}
-      <Sidebar />
+      <Router>
+        <Routes>
+          <Route path="/" element={<DashboardPage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="*" element={<Error />} />
+        </Routes>
+      </Router>
     </>
   );
 };

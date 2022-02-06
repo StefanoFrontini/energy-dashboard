@@ -57,7 +57,8 @@ const ConsumiMensiliEnergia = ({
     .y((d) => yScale(yValue(d)));
 
   const colorScale = scaleOrdinal()
-    .domain(d3Data.map(colorValue))
+    .domain(["2019", "2020", "2021"])
+    // .domain(d3Data.map(colorValue))
     .range(["#e41a1c", "#377eb8", "#4daf4a"]);
 
   const filteredData = d3Data.filter((d) => hoveredValue === colorValue(d));
@@ -67,7 +68,7 @@ const ConsumiMensiliEnergia = ({
   const sumstat = groups(filteredData, (d) => d.year);
 
   return (
-    <svg width={svgWidth} height={svgHeight}>
+    <svg viewBox={`0 0 ${svgWidth} ${svgHeight}`}>
       <g transform={`translate(${margin.left},${margin.top})`}>
         {yScale.ticks().map((tickValue, index) => {
           return (

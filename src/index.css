@@ -244,6 +244,10 @@ Sidebar
   padding: 1rem 1.5rem;
   gap: 1rem;
 }
+.sidebar-azienda svg {
+  min-width: 1rem;
+}
+
 .close-btn {
   font-size: 1.75rem;
   background: transparent;
@@ -534,13 +538,14 @@ Cocktail
 ======
 */
 
-.cocktail {
-  /* display: grid;
-  grid-template-rows: auto 1fr; */
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-bottom: 2rem;
+@media screen and (min-width: 600px) {
+  .cocktail {
+    /* display: grid;
+    grid-template-rows: auto 1fr; */
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
 }
 
 /*
@@ -558,6 +563,11 @@ header {
 LineChart
 ===============
 */
+
+.main {
+  max-width: 1000px;
+  margin: 0 auto;
+}
 
 .main path {
   fill: none;
@@ -600,11 +610,13 @@ LineChart
   font-size: 0.62rem;
 }
 
-.warning p {
+.warning p,
+.warning ul {
   color: red;
 }
 
-.ok p {
+.ok p,
+.ok ul {
   color: green;
 }
 
@@ -632,16 +644,16 @@ Print
     margin-top: 3rem;
   }
   section:nth-child(2) #pageFooter {
-    margin-top: 16rem;
-  }
-  section:nth-child(3) #pageFooter {
-    margin-top: 14rem;
-  }
-  section:nth-child(5) #pageFooter {
     margin-top: 13rem;
   }
+  section:nth-child(3) #pageFooter {
+    margin-top: 11rem;
+  }
+  section:nth-child(5) #pageFooter {
+    margin-top: 10rem;
+  }
   section:nth-child(8) #pageFooter {
-    margin-top: 30rem;
+    margin-top: 27rem;
   }
 
   #pageFooter {
@@ -650,7 +662,7 @@ Print
   }
 
   #pageFooter:after {
-    content: "Page " counter(page);
+    content: "" counter(page);
     counter-increment: page;
   }
   body {
