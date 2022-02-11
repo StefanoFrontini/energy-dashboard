@@ -1,20 +1,14 @@
-import { FaTimes } from "react-icons/fa";
-import { useGlobalContext } from "../context";
+import { useEffect } from "react";
 
-const Modal = () => {
-  const { isModalOpen, closeModal } = useGlobalContext();
+const Modal = ({ modalContent, closeModal }) => {
+  useEffect(() => {
+    setTimeout(() => {
+      closeModal();
+    }, 3000);
+  });
   return (
-    <div
-      className={`${
-        isModalOpen ? "modal-overlay show-modal" : "modal-overlay"
-      }`}
-    >
-      <div className="modal-container">
-        <h3>modal content</h3>
-        <button className="close-modal-btn" onClick={closeModal}>
-          <FaTimes />
-        </button>
-      </div>
+    <div className="modal">
+      <p>{modalContent}</p>
     </div>
   );
 };

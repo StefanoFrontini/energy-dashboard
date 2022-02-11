@@ -2,14 +2,13 @@ import axios from "axios";
 import { useState, useEffect, useCallback } from "react";
 import { timeParse, extent, timeFormat, timeFormatDefaultLocale } from "d3";
 import locale from "./locale";
-import Cookies from "js-cookie";
 
 timeFormatDefaultLocale(locale);
 
 const graphQlUrl = "http://localhost:1337/graphql";
 
-const GET_POD_DATA = `query ($id: ID!){
-  pod(id: $id){
+const GET_TEST_POD_DATA = `query ($id: ID!){
+  testPod(id: $id){
     data{
       id
       attributes{
@@ -74,79 +73,74 @@ const transform = (x) => {
   return transformedData;
 };
 
-const usePodData = (auth) => {
+const useTestPodData = (auth) => {
   const [loadingPodData, setLoadingPodData] = useState(false);
   const [data, setData] = useState({});
-  const [podId, setPodId] = useState("3");
+  const [podId, setPodId] = useState("1");
   const fetchPod = useCallback(async () => {
-    const token = Cookies.get("token");
-    if (token) {
-      setLoadingPodData(true);
-      let variables = {};
-      variables.id = podId;
-      try {
-        const {
+    let variables = {};
+    variables.id = podId;
+    setLoadingPodData(true);
+    try {
+      const {
+        data: {
           data: {
-            data: {
-              pod: { data },
-            },
+            testPod: { data },
           },
-        } = await axios({
-          url: graphQlUrl,
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          method: "POST",
+        },
+      } = await axios({
+        url: graphQlUrl,
+        method: "POST",
 
-          data: {
-            query: GET_POD_DATA,
-            variables,
-          },
-        });
+        data: {
+          query: GET_TEST_POD_DATA,
+          variables,
+        },
+      });
 
-        if (data) {
-          const dataset = transform(data.attributes.consumiMensili.data);
-          const domain = extent(dataset, (d) => d.date);
-          const start = formatTime(domain[0]);
-          const end = formatTime(domain[1]);
+      if (data) {
+        const dataset = transform(data.attributes.consumiMensili.data);
+        const domain = extent(dataset, (d) => d.date);
+        const start = formatTime(domain[0]);
+        const end = formatTime(domain[1]);
 
-          const rawData = {
-            ragioneSociale:
-              data.attributes.azienda.data.attributes.ragioneSociale,
-            pod: data.attributes.podId,
-            indirizzo: data.attributes.indirizzo,
-            mensiliCommento: data.attributes.mensiliCommento,
-            fasceCommento: data.attributes.fasceCommento,
-            piccoCommento: data.attributes.piccoCommento,
-            piccoConsumiCommento: data.attributes.piccoConsumiCommento,
-            orariCommento: data.attributes.orariCommento,
-            d3Data: transform(data.attributes.consumiMensili.data),
-            d3DataOrari:
-              data.attributes.consumiOrari &&
-              transformOrari(data.attributes.consumiOrari.data),
-            inizioPeriodo: start,
-            finePeriodo: end,
-          };
+        const rawData = {
+          ragioneSociale:
+            data.attributes.azienda.data.attributes.ragioneSociale,
+          pod: data.attributes.podId,
+          indirizzo: data.attributes.indirizzo,
+          mensiliCommento: data.attributes.mensiliCommento,
+          fasceCommento: data.attributes.fasceCommento,
+          piccoCommento: data.attributes.piccoCommento,
+          piccoConsumiCommento: data.attributes.piccoConsumiCommento,
+          orariCommento: data.attributes.orariCommento,
+          d3Data: transform(data.attributes.consumiMensili.data),
+          d3DataOrari:
+            data.attributes.consumiOrari &&
+            transformOrari(data.attributes.consumiOrari.data),
+          inizioPeriodo: start,
+          finePeriodo: end,
+        };
 
-          setData(rawData);
-          setLoadingPodData(false);
-        } else {
-          setData([]);
-        }
+        setData(rawData);
         setLoadingPodData(false);
-      } catch (error) {
-        console.log(error);
+      } else {
+        setData([]);
         setLoadingPodData(false);
       }
+      setLoadingPodData(false);
+    } catch (error) {
+      console.log(error);
+      setLoadingPodData(false);
     }
   }, [podId]);
   useEffect(() => {
-    if (auth) {
-      console.log("fetchPod");
+    if (!auth) {
+      console.log("testFetchPod");
       fetchPod();
     }
   }, [podId, fetchPod, auth]);
   return { data, podId, setPodId, loadingPodData };
 };
 
-export default usePodData;
+export default useTestPodData;

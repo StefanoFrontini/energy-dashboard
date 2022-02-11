@@ -4,7 +4,8 @@ import { useGlobalContext } from "../context";
 import { FaTimes } from "react-icons/fa";
 
 const Sidebar = () => {
-  const { aziendas, isSidebarOpen, closeSidebar } = useGlobalContext();
+  const { aziendas, isSidebarOpen, closeSidebar, testAziendas, state } =
+    useGlobalContext();
 
   // if (loading) {
   //   return <Loading />;
@@ -20,9 +21,14 @@ const Sidebar = () => {
         </button>
       </div>
       <Search />
-      {aziendas.map((item) => {
-        return <Azienda key={item.id} {...item} />;
-      })}
+      {state.isAuthenticated &&
+        aziendas.map((item) => {
+          return <Azienda key={item.id} {...item} />;
+        })}
+      {!state.isAuthenticated &&
+        testAziendas.map((item) => {
+          return <Azienda key={item.id} {...item} />;
+        })}
     </aside>
   );
 };

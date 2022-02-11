@@ -30,9 +30,22 @@ const Dashboard = React.forwardRef((props, ref) => {
     pdrData,
     showGas,
     showPower,
+    state,
+    testLoadingPodData,
+    testLoadingPdrData,
+    testPodData,
+    testPdrData,
+    testLoadingAziendaData,
   } = useGlobalContext();
 
-  if (loadingPodData || loadingAziendaData || loadingPdrData) {
+  if (
+    loadingPodData ||
+    loadingAziendaData ||
+    loadingPdrData ||
+    testLoadingPodData ||
+    testLoadingPdrData ||
+    testLoadingAziendaData
+  ) {
     return <Loading />;
   }
 
@@ -40,7 +53,7 @@ const Dashboard = React.forwardRef((props, ref) => {
     <div ref={ref}>
       <Header />
       <main className="main">
-        {showPower && (
+        {state.isAuthenticated && showPower && (
           <>
             <section>
               <p>
@@ -143,7 +156,7 @@ const Dashboard = React.forwardRef((props, ref) => {
             </section>
           </>
         )}
-        {showGas && (
+        {state.isAuthenticated && showGas && (
           <>
             <section>
               {pdrData.d3Data && (
@@ -170,6 +183,153 @@ const Dashboard = React.forwardRef((props, ref) => {
                   />
                   <article className="ok">
                     <ReactMarkdown>{pdrData.mensiliCommento}</ReactMarkdown>
+                  </article>
+                  <div id="pageFooter"></div>
+                  <div className="page-break"></div>
+                </>
+              )}
+            </section>
+          </>
+        )}
+        {!state.isAuthenticated && showPower && (
+          <>
+            <section>
+              <p>
+                {testPodData.ragioneSociale}
+                <br></br>
+                {testPodData.pod && `pod: ${testPodData.pod}`}
+                <br></br>
+                {testPodData.indirizzo &&
+                  `indirizzo pod: ${testPodData.indirizzo}`}
+                <br></br>
+                Periodo: {testPodData.inizioPeriodo} - {testPodData.finePeriodo}{" "}
+                <br></br>Report del {formattedDate}
+              </p>
+            </section>
+            <section>
+              <h3>Andamento consumi mensili (kWh)</h3>
+              {testPodData.d3Data && (
+                <ConsumiMensiliEnergia
+                  {...testPodData}
+                  svgWidth={svgWidth}
+                  svgHeight={svgHeight}
+                />
+              )}
+
+              <article className="warning">
+                <ReactMarkdown>{testPodData.mensiliCommento}</ReactMarkdown>
+              </article>
+              <div id="pageFooter"></div>
+              <div className="page-break"></div>
+            </section>
+
+            <section>
+              <h3>Andamento consumi mensili per fasce (kWh)</h3>
+
+              {testPodData.d3Data && (
+                <ConsumiFasce
+                  {...testPodData}
+                  svgWidth={svgWidth}
+                  svgHeight={svgHeight}
+                />
+              )}
+              <article className="warning">
+                <ReactMarkdown>{testPodData.fasceCommento}</ReactMarkdown>
+              </article>
+
+              <img
+                src="https://res.cloudinary.com/stefano75/image/upload/v1641728180/fasce-orarie-arera-min_vrc0o8.png"
+                alt="fasce orarie arera"
+                width="600"
+                height="127"
+              />
+              <div id="pageFooter"></div>
+              <div className="page-break"></div>
+            </section>
+
+            <section>
+              <h3>Picco di potenza (kW) e Potenza disponibile (linea nera)</h3>
+
+              {testPodData.d3Data && (
+                <Picco
+                  {...testPodData}
+                  svgWidth={svgWidth}
+                  svgHeight={svgHeight}
+                />
+              )}
+
+              <article className="warning">
+                <ReactMarkdown>{testPodData.piccoCommento}</ReactMarkdown>
+              </article>
+            </section>
+            <section>
+              <h3>Picco di potenza (kW) e Consumi mensili (kWh)</h3>
+
+              {testPodData.d3Data && (
+                <PiccoConsumi
+                  {...testPodData}
+                  svgWidth={svgWidth}
+                  svgHeight={svgHeight}
+                />
+              )}
+
+              <article className="warning">
+                <ReactMarkdown>
+                  {testPodData.piccoConsumiCommento}
+                </ReactMarkdown>
+              </article>
+              <div id="pageFooter"></div>
+              <div className="page-break"></div>
+            </section>
+            <section>
+              {testPodData.d3DataOrari && (
+                <>
+                  <h3>Consumi orari (kWh)</h3>
+                  <ConsumiOrari
+                    {...testPodData}
+                    svgWidth={svgWidth}
+                    svgHeight={svgHeight}
+                  />
+                </>
+              )}
+
+              <article className="warning">
+                <ReactMarkdown>{testPodData.orariCommento}</ReactMarkdown>
+              </article>
+              <div id="pageFooter"></div>
+              <div className="page-break"></div>
+            </section>
+          </>
+        )}
+        {!state.isAuthenticated && showGas && (
+          <>
+            <section>
+              {testPdrData.d3Data && (
+                <p>
+                  {testPdrData.ragioneSociale}
+                  <br></br>
+                  {testPdrData.pdr && `pdr: ${testPdrData.pdr}`}
+                  <br></br>
+                  {testPdrData.indirizzo &&
+                    `indirizzo pdr: ${testPdrData.indirizzo}`}
+                  <br></br>
+                  Periodo: {testPdrData.inizioPeriodo} -{" "}
+                  {testPdrData.finePeriodo}
+                  <br></br>Report del {formattedDate}
+                </p>
+              )}
+            </section>
+            <section>
+              {testPdrData.d3Data && (
+                <>
+                  <h3>Andamento consumi mensili gas (Smc)</h3>
+                  <ConsumiMensiliGas
+                    {...testPdrData}
+                    svgWidth={svgWidth}
+                    svgHeight={svgHeight}
+                  />
+                  <article className="ok">
+                    <ReactMarkdown>{testPdrData.mensiliCommento}</ReactMarkdown>
                   </article>
                   <div id="pageFooter"></div>
                   <div className="page-break"></div>

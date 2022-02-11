@@ -182,48 +182,75 @@ p {
 
 /*
 ===============
-Modal
+Modal & Form Input & Login
 ===============
 */
-/* .modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: grid;
-  place-items: center;
-  transition: var(--transition);
-  visibility: hidden;
-  z-index: -1;
-} */
-/* OPEN/CLOSE MODAL */
-/* .show-modal {
-  visibility: visible;
-  z-index: 10;
-}
-.modal-container {
-  background: var(--clr-white);
-  border-radius: var(--radius);
-  width: 90vw;
-  height: 30vh;
-  max-width: var(--fixed-width);
+
+.login-container {
   text-align: center;
-  display: grid;
-  place-items: center;
-  position: relative;
+  margin-top: 5rem;
 }
-.close-modal-btn {
+
+.modal {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
-  font-size: 2rem;
-  background: transparent;
-  border-color: transparent;
+  top: 4rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--clr-white);
+  display: inline-block;
+  padding: 0.25rem 1rem;
+  border-radius: var(--radius);
+  text-transform: capitalize;
+}
+
+.modal p {
+  margin-bottom: 0;
   color: var(--clr-red-dark);
+}
+.form {
+  background: var(--clr-white);
+  max-width: var(--fixed-width);
+  margin: 0 auto;
+  margin-bottom: 4rem;
+  padding: 1rem 2rem;
+  border-radius: var(--radius);
+}
+.form-input {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+}
+
+.form-input label {
+  font-size: 0.9rem;
+  font-weight: bold;
+  text-align: left;
+  margin-bottom: 0.2rem;
+}
+.form input {
+  background: var(--clr-grey-10);
+  border-color: transparent;
+  border-radius: var(--radius);
+  padding: 0.25rem 0.5rem;
+}
+.form-control {
+  margin: 0.5rem 0;
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  align-items: center;
+}
+.form button {
+  display: inline-block;
+  background: var(--clr-black);
+  color: var(--clr-white);
+  border-color: transparent;
+  margin-top: 1rem;
+  letter-spacing: var(--spacing);
+  padding: 0.15rem 0.25rem;
+  text-transform: capitalize;
+  border-radius: var(--radius);
   cursor: pointer;
-} */
+}
 
 /*
 ===============
@@ -644,10 +671,10 @@ Print
     margin-top: 3rem;
   }
   section:nth-child(2) #pageFooter {
-    margin-top: 13rem;
+    margin-top: 9rem;
   }
   section:nth-child(3) #pageFooter {
-    margin-top: 11rem;
+    margin-top: 9rem;
   }
   section:nth-child(5) #pageFooter {
     margin-top: 10rem;

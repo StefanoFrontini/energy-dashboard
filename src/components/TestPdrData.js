@@ -2,14 +2,13 @@ import axios from "axios";
 import { useState, useEffect, useCallback } from "react";
 import { timeParse, extent, timeFormat, timeFormatDefaultLocale } from "d3";
 import locale from "./locale";
-import Cookies from "js-cookie";
 
 timeFormatDefaultLocale(locale);
 
 const graphQlUrl = "http://localhost:1337/graphql";
 
-const GET_PDR_DATA = `query ($id: ID!){
-  pdr(id: $id){
+const GET_TEST_PDR_DATA = `query ($id: ID!){
+  testPdr(id: $id){
     data{
       id
       attributes{
@@ -48,70 +47,64 @@ const transform = (x) => {
   return transformedData;
 };
 
-const usePdrData = (auth) => {
+const useTestPdrData = (auth) => {
   const [data, setData] = useState([]);
-  const [pdrId, setPdrId] = useState(2);
+  const [pdrId, setPdrId] = useState(1);
   const [loadingPdrData, setLoadingPdrData] = useState(false);
   const fetchPdr = useCallback(async () => {
-    const token = Cookies.get("token");
     let variables = {};
     variables.id = pdrId;
-
-    if (token) {
-      setLoadingPdrData(true);
-      try {
-        const {
+    setLoadingPdrData(true);
+    try {
+      const {
+        data: {
           data: {
-            data: {
-              pdr: { data },
-            },
+            testPdr: { data },
           },
-        } = await axios({
-          url: graphQlUrl,
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          method: "POST",
-          data: {
-            query: GET_PDR_DATA,
-            variables,
-          },
-        });
+        },
+      } = await axios({
+        url: graphQlUrl,
+        method: "POST",
+        data: {
+          query: GET_TEST_PDR_DATA,
+          variables,
+        },
+      });
 
-        if (data) {
-          const dataset = transform(data.attributes.consumiMensili.data);
-          const domain = extent(dataset, (d) => d.date);
-          const start = formatTime(domain[0]);
-          const end = formatTime(domain[1]);
-          const rawData = {
-            ragioneSociale:
-              data.attributes.azienda.data.attributes.ragioneSociale,
-            pdr: data.attributes.pdrId,
-            indirizzo: data.attributes.indirizzo,
-            mensiliCommento: data.attributes.mensiliCommento,
-            d3Data: transform(data.attributes.consumiMensili.data),
-            inizioPeriodo: start,
-            finePeriodo: end,
-          };
+      if (data) {
+        const dataset = transform(data.attributes.consumiMensili.data);
+        const domain = extent(dataset, (d) => d.date);
+        const start = formatTime(domain[0]);
+        const end = formatTime(domain[1]);
+        const rawData = {
+          ragioneSociale:
+            data.attributes.azienda.data.attributes.ragioneSociale,
+          pdr: data.attributes.pdrId,
+          indirizzo: data.attributes.indirizzo,
+          mensiliCommento: data.attributes.mensiliCommento,
+          d3Data: transform(data.attributes.consumiMensili.data),
+          inizioPeriodo: start,
+          finePeriodo: end,
+        };
 
-          setData(rawData);
-          setLoadingPdrData(false);
-        } else {
-          setData([]);
-        }
+        setData(rawData);
         setLoadingPdrData(false);
-      } catch (error) {
-        console.log(error);
+      } else {
+        setData([]);
         setLoadingPdrData(false);
       }
+      setLoadingPdrData(false);
+    } catch (error) {
+      console.log(error);
+      setLoadingPdrData(false);
     }
   }, [pdrId]);
   useEffect(() => {
-    if (auth) {
+    if (!auth) {
       fetchPdr();
     }
   }, [pdrId, fetchPdr, auth]);
   return { data, pdrId, setPdrId, loadingPdrData };
 };
 
-export default usePdrData;
+export default useTestPdrData;

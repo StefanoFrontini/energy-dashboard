@@ -2,14 +2,20 @@ import Dashboard from "../components/Dashboard";
 import { useReactToPrint } from "react-to-print";
 import { useRef } from "react";
 import Sidebar from "../components/Sidebar";
+import { useGlobalContext } from "../context";
 
 const DashboardPage = () => {
+  const { openSidebar } = useGlobalContext();
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
+
   return (
     <>
+      <button className="btn" onClick={openSidebar}>
+        Mostra Clienti
+      </button>
       <Sidebar />
       <Dashboard ref={componentRef} />
       <section>
