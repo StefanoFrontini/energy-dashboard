@@ -5,7 +5,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 
-const STRAPI_URL = "http://localhost:1337/api/auth/local";
+const { REACT_APP_LOGIN_URL } = process.env;
 
 const LoginForm = () => {
   const { state, dispatch } = useGlobalContext();
@@ -15,13 +15,11 @@ const LoginForm = () => {
 
   const fetchLoginData = async () => {
     try {
-      const { data } = await axios.post(
-        STRAPI_URL,
-        { identifier: email, password }
-        // { withCredentials: true }
-      );
+      const { data } = await axios.post(REACT_APP_LOGIN_URL, {
+        identifier: email,
+        password,
+      });
       if (data) {
-        console.log(data);
         Cookies.set("token", data.jwt);
         dispatch({ type: "LOGIN", payload: data.user });
         navigate("/");

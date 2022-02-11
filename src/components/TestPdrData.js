@@ -5,7 +5,7 @@ import locale from "./locale";
 
 timeFormatDefaultLocale(locale);
 
-const graphQlUrl = "http://localhost:1337/graphql";
+const { REACT_APP_URL } = process.env;
 
 const GET_TEST_PDR_DATA = `query ($id: ID!){
   testPdr(id: $id){
@@ -63,7 +63,7 @@ const useTestPdrData = (auth) => {
           },
         },
       } = await axios({
-        url: graphQlUrl,
+        url: REACT_APP_URL,
         method: "POST",
         data: {
           query: GET_TEST_PDR_DATA,

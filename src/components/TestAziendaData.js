@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 
-const graphQlUrl = "http://localhost:1337/graphql";
+const { REACT_APP_URL } = process.env;
 
 const GET_TEST_AZIENDAS = `query($searchTerm: String) {
   testAziendas(pagination: { limit: -1 }, sort:"ragioneSociale:asc", filters: { ragioneSociale: { containsi: $searchTerm }}){
@@ -49,7 +49,7 @@ const useTestAziendaData = (auth, searchTerm) => {
           },
         },
       } = await axios({
-        url: graphQlUrl,
+        url: REACT_APP_URL,
         method: "POST",
         data: {
           query: GET_TEST_AZIENDAS,

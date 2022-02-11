@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 
 timeFormatDefaultLocale(locale);
 
-const graphQlUrl = "http://localhost:1337/graphql";
+const { REACT_APP_URL } = process.env;
 
 const GET_PDR_DATA = `query ($id: ID!){
   pdr(id: $id){
@@ -67,7 +67,7 @@ const usePdrData = (auth) => {
             },
           },
         } = await axios({
-          url: graphQlUrl,
+          url: REACT_APP_URL,
           headers: {
             Authorization: `Bearer ${token}`,
           },

@@ -5,7 +5,6 @@ import usePodData from "./components/PodData";
 import useTestPodData from "./components/TestPodData";
 import useTestPdrData from "./components/TestPdrData";
 import usePdrData from "./components/PdrData";
-// reducer function
 import { reducer } from "./components/reducer";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -17,9 +16,7 @@ const defaultState = {
   modalContent: "",
 };
 
-const STRAPI_URL = "http://localhost:1337/api/users/me";
-
-// const url = "http://localhost:1337/api/aziendas?populate=*";
+const { REACT_APP_ME } = process.env;
 
 const AppContext = React.createContext();
 
@@ -30,8 +27,6 @@ const AppProvider = ({ children }) => {
     state.isAuthenticated,
     searchTerm
   );
-  // const [aziendas, setData] = useState([]);
-  // const [loadingAziendaData, setLoadingAziendaData] = useState(false);
 
   const { data: testAziendas, loadingAziendaData: testLoadingAziendaData } =
     useTestAziendaData(state.isAuthenticated, searchTerm);
@@ -63,7 +58,7 @@ const AppProvider = ({ children }) => {
     const token = Cookies.get("token");
     if (token) {
       try {
-        const { data } = await axios.get(STRAPI_URL, {
+        const { data } = await axios.get(REACT_APP_ME, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

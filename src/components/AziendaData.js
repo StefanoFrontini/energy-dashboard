@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 
-const graphQlUrl = "http://localhost:1337/graphql";
+const { REACT_APP_URL } = process.env;
 
 const GET_AZIENDAS = `query($searchTerm: String) {
   aziendas(pagination: { limit: -1 }, sort:"ragioneSociale:asc", filters: { ragioneSociale: { containsi: $searchTerm }}){
@@ -52,7 +52,7 @@ const useAziendaData = (auth, searchTerm) => {
             },
           },
         } = await axios({
-          url: graphQlUrl,
+          url: REACT_APP_URL,
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
