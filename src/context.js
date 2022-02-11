@@ -1,6 +1,5 @@
 import React, { useState, useReducer, useEffect } from "react";
 import useAziendaData from "./components/AziendaData";
-
 import useTestAziendaData from "./components/TestAziendaData";
 import usePodData from "./components/PodData";
 import useTestPodData from "./components/TestPodData";
@@ -26,14 +25,16 @@ const AppContext = React.createContext();
 
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, defaultState);
+  const [searchTerm, setSearchTerm] = useState("");
   const { data: aziendas, loadingAziendaData } = useAziendaData(
-    state.isAuthenticated
+    state.isAuthenticated,
+    searchTerm
   );
   // const [aziendas, setData] = useState([]);
   // const [loadingAziendaData, setLoadingAziendaData] = useState(false);
 
   const { data: testAziendas, loadingAziendaData: testLoadingAziendaData } =
-    useTestAziendaData(state.isAuthenticated);
+    useTestAziendaData(state.isAuthenticated, searchTerm);
   const {
     data: podData,
     setPodId,
@@ -138,6 +139,7 @@ const AppProvider = ({ children }) => {
         testSetPdrId,
         testLoadingPdrData,
         getTestPdrId,
+        setSearchTerm,
       }}
     >
       {children}

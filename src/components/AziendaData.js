@@ -4,8 +4,8 @@ import Cookies from "js-cookie";
 
 const graphQlUrl = "http://localhost:1337/graphql";
 
-const GET_AZIENDAS = `query {
-  aziendas(pagination: { limit: -1 }){
+const GET_AZIENDAS = `query($searchTerm: String) {
+  aziendas(pagination: { limit: -1 }, sort:"ragioneSociale:asc", filters: { ragioneSociale: { containsi: $searchTerm }}){
     data{
       id
       attributes{
@@ -34,15 +34,16 @@ const GET_AZIENDAS = `query {
   }
 }`;
 
-const useAziendaData = (auth) => {
+const useAziendaData = (auth, searchTerm) => {
   const [data, setData] = useState([]);
   const [loadingAziendaData, setLoadingAziendaData] = useState(false);
 
-  const fetchAziendas = async () => {
+  const fetchAziendas = async (searchTerm) => {
     const token = Cookies.get("token");
 
     if (token) {
       setLoadingAziendaData(true);
+      const variables = { searchTerm };
       try {
         const {
           data: {
@@ -58,6 +59,7 @@ const useAziendaData = (auth) => {
           },
           data: {
             query: GET_AZIENDAS,
+            variables,
           },
         });
         if (data) {
@@ -77,9 +79,9 @@ const useAziendaData = (auth) => {
   useEffect(() => {
     if (auth) {
       console.log("fetchAziendas");
-      fetchAziendas();
+      fetchAziendas(searchTerm);
     }
-  }, [auth]);
+  }, [auth, searchTerm]);
 
   return { data, loadingAziendaData };
 };

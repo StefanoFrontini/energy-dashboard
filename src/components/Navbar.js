@@ -13,21 +13,19 @@ const Navbar = () => {
   };
   return (
     <nav>
-      <div className="nav-header">
-        <Link className="btn" to="/">
-          Home
-        </Link>
-        {!state.isAuthenticated && (
-          <Link className="btn" to="login">
-            login
-          </Link>
-        )}
-        {state.isAuthenticated && (
-          <button className="btn" onClick={logout}>
-            logout
-          </button>
-        )}
-      </div>
+      <ul className="nav-links">
+        <li>
+          <Link to="/">Home</Link>
+        </li>
+        <li>
+          {!state.isAuthenticated && <Link to="login">login</Link>}
+          {state.isAuthenticated && (
+            <button className="btn" onClick={logout}>
+              logout
+            </button>
+          )}
+        </li>
+      </ul>
     </nav>
   );
 };

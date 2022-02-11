@@ -70,8 +70,6 @@ const ConsumiOrari = ({ svgWidth, svgHeight, d3DataOrari }) => {
     return [year[0], newArr];
   });
 
-  console.log("orderedRollupData", orderedRollupData);
-
   const xScale = scaleLinear()
     .domain(extent(d3DataOrari, hourValue))
     .range([0, innerWidth])

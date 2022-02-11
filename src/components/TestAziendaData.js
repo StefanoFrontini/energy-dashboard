@@ -3,8 +3,8 @@ import { useState, useEffect } from "react";
 
 const graphQlUrl = "http://localhost:1337/graphql";
 
-const GET_TEST_AZIENDAS = `query {
-  testAziendas(pagination: { limit: -1 }){
+const GET_TEST_AZIENDAS = `query($searchTerm: String) {
+  testAziendas(pagination: { limit: -1 }, sort:"ragioneSociale:asc", filters: { ragioneSociale: { containsi: $searchTerm }}){
     data{
       id
       attributes{
@@ -33,13 +33,13 @@ const GET_TEST_AZIENDAS = `query {
   }
 }`;
 
-const useTestAziendaData = (auth) => {
+const useTestAziendaData = (auth, searchTerm) => {
   const [data, setData] = useState([]);
   const [loadingAziendaData, setLoadingAziendaData] = useState(false);
-  // const token = Cookies.get("token");
 
-  const fetchAziendas = async () => {
+  const fetchAziendas = async (searchTerm) => {
     setLoadingAziendaData(true);
+    const variables = { searchTerm };
 
     try {
       const {
@@ -53,6 +53,7 @@ const useTestAziendaData = (auth) => {
         method: "POST",
         data: {
           query: GET_TEST_AZIENDAS,
+          variables,
         },
       });
       if (data) {
@@ -72,7 +73,7 @@ const useTestAziendaData = (auth) => {
       console.log("testFetchAziendas");
       fetchAziendas();
     }
-  }, [auth]);
+  }, [auth, searchTerm]);
   return { data, loadingAziendaData };
 };
 
