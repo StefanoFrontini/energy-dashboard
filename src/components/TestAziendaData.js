@@ -68,7 +68,6 @@ const useTestAziendaData = (auth) => {
   };
   useEffect(() => {
     if (!auth) {
-      console.log("testFetchAziendas");
       fetchAziendas();
     }
   }, [auth]);

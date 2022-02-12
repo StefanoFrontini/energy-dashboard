@@ -13,9 +13,9 @@ import {
 import { useState } from "react";
 import Tooltip from "./Tooltip";
 import ColorLegend from "./ColorLegend";
-import locale from "./locale";
+// import locale from "./locale";
 
-timeFormatDefaultLocale(locale);
+// timeFormatDefaultLocale(locale);
 
 const xValue = (d) => d.month;
 const yValue = (d) => d.picco;

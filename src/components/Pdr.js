@@ -8,7 +8,7 @@ const Pdr = ({ id, attributes }) => {
   return (
     <div className="sidebar-azienda">
       <BsArrowReturnRight />
-      <IoIosFlame />
+      <IoIosFlame style={{ color: "var(--clr-primary-4)" }} />
       {state.isAuthenticated && (
         <h6 className="sidebar-address" onClick={() => getPdrId(id)}>
           {attributes.indirizzo}

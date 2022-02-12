@@ -10,20 +10,20 @@ import {
   timeFormatDefaultLocale,
 } from "d3";
 import { useState } from "react";
-import locale from "./locale";
 import ColorLegendOrari from "./ColorLegendOrari";
+// import locale from "./locale";
 
-timeFormatDefaultLocale(locale);
+// timeFormatDefaultLocale(locale);
 
 const margin = { top: 50, right: 10, bottom: 20, left: 30 };
 
-const fadeOpacity = 0.1;
+// const fadeOpacity = 0.1;
 
 const formatNumber = format(",d");
 const formatTime = timeFormat("%B");
 const formatGiornoTipo = (g) => {
-  if (g === "saturday") return "sabato";
-  else if (g === "sunday") return "domenica";
+  if (g === "saturday") return "saturday";
+  else if (g === "sunday") return "sunday";
   else return g;
 };
 
@@ -33,13 +33,13 @@ const giornoTipoValue = (d) => d.giornoTipo;
 const hourValue = (d) => d.ora;
 const kWhValue = (d) => d.kWh;
 
-const ConsumiOrari = ({ svgWidth, svgHeight, d3DataOrari }) => {
+const ConsumiOrari = ({ d3DataOrari }) => {
   const svgWidthOrari = 250;
   const svgHeightOrari = 250;
   const innerWidth = svgWidthOrari - margin.left - margin.right;
   const innerHeight = svgHeightOrari - margin.top - margin.bottom;
   const [hoveredPoint, setHoveredPoint] = useState(null);
-  const [hoveredValue, setHoveredValue] = useState(false);
+  // const [hoveredValue, setHoveredValue] = useState(false);
 
   const rollupData = rollups(
     d3DataOrari,
@@ -89,37 +89,37 @@ const ConsumiOrari = ({ svgWidth, svgHeight, d3DataOrari }) => {
     // .domain(d3DataOrari.map(yearValue))
     .range(["#e41a1c", "#377eb8", "#4daf4a"]);
 
-  const filteredData = hoveredPoint
-    ? d3DataOrari.filter((d) => d.ora === hoveredPoint[0])
-    : d3DataOrari;
+  // const filteredData = hoveredPoint
+  //   ? d3DataOrari.filter((d) => d.ora === hoveredPoint[0])
+  //   : d3DataOrari;
 
-  const sumstat = rollups(
-    filteredData,
-    (v) => Math.round(mean(v, kWhValue)),
-    yearValue,
-    monthValue,
-    giornoTipoValue,
-    hourValue
-  );
+  // const sumstat = rollups(
+  //   filteredData,
+  //   (v) => Math.round(mean(v, kWhValue)),
+  //   yearValue,
+  //   monthValue,
+  //   giornoTipoValue,
+  //   hourValue
+  // );
 
-  const orderedSumstat = sumstat.map((year) => {
-    let newArr = year[1].map((el) => {
-      if (el[1][0][0] === "saturday") {
-        let newArray = [];
-        let newElement = [];
-        newArray = [el[1][2], el[1][0], el[1][1]];
-        newElement = [el[0], newArray];
-        return newElement;
-      } else if (el[1][0][0] === "sunday") {
-        let newArray = [];
-        let newElement = [];
-        newArray = [el[1][2], el[1][1], el[1][0]];
-        newElement = [el[0], newArray];
-        return newElement;
-      } else return el;
-    });
-    return [year[0], newArr];
-  });
+  // const orderedSumstat = sumstat.map((year) => {
+  //   let newArr = year[1].map((el) => {
+  //     if (el[1][0][0] === "saturday") {
+  //       let newArray = [];
+  //       let newElement = [];
+  //       newArray = [el[1][2], el[1][0], el[1][1]];
+  //       newElement = [el[0], newArray];
+  //       return newElement;
+  //     } else if (el[1][0][0] === "sunday") {
+  //       let newArray = [];
+  //       let newElement = [];
+  //       newArray = [el[1][2], el[1][1], el[1][0]];
+  //       newElement = [el[0], newArray];
+  //       return newElement;
+  //     } else return el;
+  //   });
+  //   return [year[0], newArr];
+  // });
 
   let z = 0;
 

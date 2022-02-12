@@ -9,9 +9,9 @@ import {
 } from "d3";
 
 import { useState } from "react";
-import locale from "./locale";
+// import locale from "./locale";
 
-timeFormatDefaultLocale(locale);
+// timeFormatDefaultLocale(locale);
 
 const xValue = (d) => d.kWh;
 const yValue = (d) => d.picco;

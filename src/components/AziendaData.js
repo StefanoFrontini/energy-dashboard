@@ -77,7 +77,6 @@ const useAziendaData = (auth) => {
   };
   useEffect(() => {
     if (auth) {
-      console.log("fetchAziendas");
       fetchAziendas();
     }
   }, [auth]);

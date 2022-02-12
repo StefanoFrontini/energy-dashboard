@@ -8,7 +8,7 @@ const Pod = ({ id, attributes }) => {
   return (
     <div className="sidebar-azienda">
       <BsArrowReturnRight />
-      <GiElectric />
+      <GiElectric style={{ color: "var(--clr-red-dark)" }} />
       {state.isAuthenticated && (
         <h6 className="sidebar-address" onClick={() => getPodId(id)}>
           {attributes.indirizzo}
