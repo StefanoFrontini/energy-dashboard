@@ -4,8 +4,8 @@ import Cookies from "js-cookie";
 
 const { REACT_APP_URL } = process.env;
 
-const GET_AZIENDAS = `query($searchTerm: String) {
-  aziendas(pagination: { limit: -1 }, sort:"ragioneSociale:asc", filters: { ragioneSociale: { containsi: $searchTerm }}){
+const GET_AZIENDAS = `query {
+  aziendas(pagination: { limit: -1 }, sort:"ragioneSociale:asc"){
     data{
       id
       attributes{
@@ -34,16 +34,16 @@ const GET_AZIENDAS = `query($searchTerm: String) {
   }
 }`;
 
-const useAziendaData = (auth, searchTerm) => {
+const useAziendaData = (auth) => {
   const [data, setData] = useState([]);
   const [loadingAziendaData, setLoadingAziendaData] = useState(false);
 
-  const fetchAziendas = async (searchTerm) => {
+  const fetchAziendas = async () => {
     const token = Cookies.get("token");
 
     if (token) {
       setLoadingAziendaData(true);
-      const variables = { searchTerm };
+
       try {
         const {
           data: {
@@ -59,7 +59,6 @@ const useAziendaData = (auth, searchTerm) => {
           },
           data: {
             query: GET_AZIENDAS,
-            variables,
           },
         });
         if (data) {
@@ -79,9 +78,9 @@ const useAziendaData = (auth, searchTerm) => {
   useEffect(() => {
     if (auth) {
       console.log("fetchAziendas");
-      fetchAziendas(searchTerm);
+      fetchAziendas();
     }
-  }, [auth, searchTerm]);
+  }, [auth]);
 
   return { data, loadingAziendaData };
 };

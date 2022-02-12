@@ -23,13 +23,13 @@ const AppContext = React.createContext();
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, defaultState);
   const [searchTerm, setSearchTerm] = useState("");
+
   const { data: aziendas, loadingAziendaData } = useAziendaData(
-    state.isAuthenticated,
-    searchTerm
+    state.isAuthenticated
   );
 
   const { data: testAziendas, loadingAziendaData: testLoadingAziendaData } =
-    useTestAziendaData(state.isAuthenticated, searchTerm);
+    useTestAziendaData(state.isAuthenticated);
   const {
     data: podData,
     setPodId,
@@ -135,6 +135,7 @@ const AppProvider = ({ children }) => {
         testLoadingPdrData,
         getTestPdrId,
         setSearchTerm,
+        searchTerm,
       }}
     >
       {children}

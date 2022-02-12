@@ -1,16 +1,56 @@
+import { useEffect, useState, useCallback } from "react";
 import Search from "./Search";
 import Azienda from "./Azienda";
 import { useGlobalContext } from "../context";
 import { FaTimes } from "react-icons/fa";
 
 const Sidebar = () => {
-  const { aziendas, isSidebarOpen, closeSidebar, testAziendas, state } =
-    useGlobalContext();
+  const {
+    isSidebarOpen,
+    closeSidebar,
+    testAziendas,
+    state,
+    searchTerm,
+    aziendas,
+  } = useGlobalContext();
+  const [filtered, setFiltered] = useState([]);
+  const [filteredTest, setFilteredTest] = useState([]);
+
+  const filteredAziendas = useCallback(() => {
+    if (aziendas) {
+      const data = aziendas.filter((item) =>
+        item.attributes.ragioneSociale.toLowerCase().includes(searchTerm)
+      );
+      setFiltered(data);
+    }
+  }, [searchTerm, aziendas]);
+
+  const filteredTestAziendas = useCallback(() => {
+    if (testAziendas) {
+      const data = testAziendas.filter((item) =>
+        item.attributes.ragioneSociale.toLowerCase().includes(searchTerm)
+      );
+      setFilteredTest(data);
+    }
+  }, [searchTerm, testAziendas]);
+
+  useEffect(() => {
+    if (state.isAuthenticated) {
+      filteredAziendas();
+    } else {
+      filteredTestAziendas();
+    }
+  }, [
+    searchTerm,
+    filteredAziendas,
+    filteredTestAziendas,
+    state.isAuthenticated,
+  ]);
 
   // if (loading) {
   //   return <Loading />;
   // }
-  // if (aziendas.length < 1) {
+  // if (filtered.length < 1) {
   //   return <h2 className="section-title">no aziendas</h2>;
   // }
   return (
@@ -21,14 +61,25 @@ const Sidebar = () => {
         </button>
       </div>
       <Search />
-      {state.isAuthenticated &&
-        aziendas.map((item) => {
-          return <Azienda key={item.id} {...item} />;
-        })}
-      {!state.isAuthenticated &&
-        testAziendas.map((item) => {
-          return <Azienda key={item.id} {...item} />;
-        })}
+      <div className="aziendas-list">
+        {state.isAuthenticated &&
+          filtered.length > 0 &&
+          filtered.map((item) => {
+            return <Azienda key={item.id} {...item} />;
+          })}
+        {state.isAuthenticated && filtered.length < 1 && (
+          <h3 className="no-result">no results</h3>
+        )}
+
+        {!state.isAuthenticated &&
+          filteredTest.length > 0 &&
+          filteredTest.map((item) => {
+            return <Azienda key={item.id} {...item} />;
+          })}
+        {!state.isAuthenticated && filteredTest.length < 1 && (
+          <h3 className="no-result">no results</h3>
+        )}
+      </div>
     </aside>
   );
 };

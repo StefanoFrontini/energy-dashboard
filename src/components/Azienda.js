@@ -8,7 +8,7 @@ const Azienda = ({ attributes, id }) => {
   const [showPod, setShowPod] = React.useState(false);
 
   return (
-    <div>
+    <>
       <div className="sidebar-azienda">
         {showPod ? (
           <AiOutlineMinusCircle
@@ -33,7 +33,7 @@ const Azienda = ({ attributes, id }) => {
         attributes.pdrs.data.map((item) => {
           return showPod && <Pdr key={item.id} {...item} />;
         })}
-    </div>
+    </>
   );
 };
 

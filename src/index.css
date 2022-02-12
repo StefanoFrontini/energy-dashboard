@@ -339,6 +339,16 @@ Sidebar
   justify-self: center;
   height: 40px;
 }
+
+.no-result {
+  text-align: center;
+  color: var(--clr-red-dark);
+}
+
+.aziendas-list {
+  display: flex;
+  flex-direction: column;
+}
 /*
 .links a {
   display: flex;

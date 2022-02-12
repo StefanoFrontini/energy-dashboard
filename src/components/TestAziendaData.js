@@ -3,8 +3,8 @@ import { useState, useEffect } from "react";
 
 const { REACT_APP_URL } = process.env;
 
-const GET_TEST_AZIENDAS = `query($searchTerm: String) {
-  testAziendas(pagination: { limit: -1 }, sort:"ragioneSociale:asc", filters: { ragioneSociale: { containsi: $searchTerm }}){
+const GET_TEST_AZIENDAS = `query {
+  testAziendas(pagination: { limit: -1 }, sort:"ragioneSociale:asc"){
     data{
       id
       attributes{
@@ -33,13 +33,12 @@ const GET_TEST_AZIENDAS = `query($searchTerm: String) {
   }
 }`;
 
-const useTestAziendaData = (auth, searchTerm) => {
+const useTestAziendaData = (auth) => {
   const [data, setData] = useState([]);
   const [loadingAziendaData, setLoadingAziendaData] = useState(false);
 
-  const fetchAziendas = async (searchTerm) => {
+  const fetchAziendas = async () => {
     setLoadingAziendaData(true);
-    const variables = { searchTerm };
 
     try {
       const {
@@ -53,7 +52,6 @@ const useTestAziendaData = (auth, searchTerm) => {
         method: "POST",
         data: {
           query: GET_TEST_AZIENDAS,
-          variables,
         },
       });
       if (data) {
@@ -73,7 +71,7 @@ const useTestAziendaData = (auth, searchTerm) => {
       console.log("testFetchAziendas");
       fetchAziendas();
     }
-  }, [auth, searchTerm]);
+  }, [auth]);
   return { data, loadingAziendaData };
 };
 
