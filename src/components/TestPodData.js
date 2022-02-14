@@ -1,9 +1,9 @@
 import axios from "axios";
 import { useState, useEffect, useCallback } from "react";
 import { timeParse, extent, timeFormat, timeFormatDefaultLocale } from "d3";
-// import locale from "./locale";
+import locale from "./locale";
 
-// timeFormatDefaultLocale(locale);
+timeFormatDefaultLocale(locale);
 
 const { REACT_APP_URL } = process.env;
 

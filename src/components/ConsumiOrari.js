@@ -11,9 +11,9 @@ import {
 } from "d3";
 import { useState } from "react";
 import ColorLegendOrari from "./ColorLegendOrari";
-// import locale from "./locale";
+import locale from "./locale";
 
-// timeFormatDefaultLocale(locale);
+timeFormatDefaultLocale(locale);
 
 const margin = { top: 50, right: 10, bottom: 20, left: 30 };
 
@@ -22,8 +22,8 @@ const margin = { top: 50, right: 10, bottom: 20, left: 30 };
 const formatNumber = format(",d");
 const formatTime = timeFormat("%B");
 const formatGiornoTipo = (g) => {
-  if (g === "saturday") return "saturday";
-  else if (g === "sunday") return "sunday";
+  if (g === "saturday") return "sabato";
+  else if (g === "sunday") return "domenica";
   else return g;
 };
 

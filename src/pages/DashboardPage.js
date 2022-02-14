@@ -14,7 +14,7 @@ const DashboardPage = () => {
   return (
     <>
       <button className="btn" onClick={openSidebar}>
-        Show Customers
+        Mostra Clienti
       </button>
       <Sidebar />
       <Dashboard ref={componentRef} />

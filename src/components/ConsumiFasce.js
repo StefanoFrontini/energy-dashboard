@@ -11,9 +11,9 @@ import {
 
 import ColorLegend from "./ColorLegend";
 import { useState } from "react";
-// import locale from "./locale";
+import locale from "./locale";
 
-// timeFormatDefaultLocale(locale);
+timeFormatDefaultLocale(locale);
 
 const formatTime = timeFormat("%b");
 
