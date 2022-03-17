@@ -85,7 +85,7 @@ const ConsumiOrari = ({ d3DataOrari }) => {
     .y((d) => yScale(d[1]));
 
   const colorScale = scaleOrdinal()
-    .domain(["2019", "2020", "2021"])
+    .domain(["2020", "2021", "2022"])
     // .domain(d3DataOrari.map(yearValue))
     .range(["#e41a1c", "#377eb8", "#4daf4a"]);
 

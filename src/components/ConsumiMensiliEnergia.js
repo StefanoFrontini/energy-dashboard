@@ -57,7 +57,7 @@ const ConsumiMensiliEnergia = ({
     .y((d) => yScale(yValue(d)));
 
   const colorScale = scaleOrdinal()
-    .domain(["2019", "2020", "2021"])
+    .domain(["2020", "2021", "2022"])
     // .domain(d3Data.map(colorValue))
     .range(["#e41a1c", "#377eb8", "#4daf4a"]);
 
