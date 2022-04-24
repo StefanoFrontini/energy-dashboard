@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Modal from "./Modal";
 import { useGlobalContext } from "../context";
 import axios from "axios";
@@ -11,6 +11,7 @@ const LoginForm = () => {
   const { state, dispatch } = useGlobalContext();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [disable, setDisable] = useState(true);
   let navigate = useNavigate();
 
   const fetchLoginData = async () => {
@@ -22,7 +23,9 @@ const LoginForm = () => {
       if (data) {
         Cookies.set("token", data.jwt);
         dispatch({ type: "LOGIN", payload: data.user });
-        navigate("/");
+        setTimeout(() => {
+          navigate("/");
+        }, 1000);
       }
     } catch (error) {
       console.log(error);
@@ -46,6 +49,13 @@ const LoginForm = () => {
   const closeModal = () => {
     dispatch({ type: "CLOSE_MODAL" });
   };
+  useEffect(() => {
+    if (email && password) {
+      setDisable(false);
+    } else {
+      setDisable(true);
+    }
+  }, [email, password]);
   return (
     <>
       {state.isModalOpen && (
@@ -53,7 +63,7 @@ const LoginForm = () => {
       )}
       <form onSubmit={handleSubmit} className="form">
         <div className="form-input">
-          <label htmlFor="email">Email o nome utente</label>
+          <label htmlFor="email">Email/Username</label>
           <input
             id="email"
             type="text"
@@ -70,7 +80,9 @@ const LoginForm = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <button type="submit">accedi </button>
+        <button disabled={disable} type="submit">
+          Submit
+        </button>
       </form>
     </>
   );

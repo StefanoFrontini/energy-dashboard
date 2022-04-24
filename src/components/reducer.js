@@ -4,7 +4,7 @@ export const reducer = (state, action) => {
       ...state,
       user: action.payload,
       isModalOpen: true,
-      modalContent: `Benvenuto ${action.payload.username}!`,
+      modalContent: `Welcome ${action.payload.username}!`,
       isAuthenticated: true,
     };
   }
@@ -12,6 +12,7 @@ export const reducer = (state, action) => {
     return {
       ...state,
       isAuthenticated: false,
+      isModalOpen: true,
       modalContent: "Bye!",
     };
   }

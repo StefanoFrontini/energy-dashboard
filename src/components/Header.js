@@ -8,7 +8,7 @@ const Header = () => {
         alt="logo pillole di energia"
       />
       <p>
-        Stefano Frontini<br></br>consulente energetico con Repower
+        Stefano Frontini<br></br>energy consultant
         <br></br>
         <a href="www.pilloledienergia.com">www.pilloledienergia.com</a>
         <br></br>

@@ -258,6 +258,10 @@ Modal & Form Input & Login
   border-radius: var(--radius);
   cursor: pointer;
 }
+.form button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 
 /*
 ======

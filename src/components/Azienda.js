@@ -9,7 +9,7 @@ const Azienda = ({ attributes, id }) => {
 
   return (
     <>
-      <div className="sidebar-azienda">
+      <div className="sidebar-azienda" data-id={id}>
         {showPod ? (
           <AiOutlineMinusCircle
             className="sidebar-circle"

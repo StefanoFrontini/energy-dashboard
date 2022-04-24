@@ -48,6 +48,8 @@ const ConsumiMensiliEnergia = ({
     .domain(extent(d3Data, xValue))
     .range([0, innerWidth]);
 
+  console.log("d3Data", d3Data);
+
   const yScale = scaleLinear()
     .domain([0, max(d3Data, yValue)])
     .range([innerHeight, 0]);
@@ -56,14 +58,14 @@ const ConsumiMensiliEnergia = ({
     .x((d) => xScale(xValue(d)))
     .y((d) => yScale(yValue(d)));
 
+  const groupData = groups(d3Data, (d) => d.year);
+
   const colorScale = scaleOrdinal()
-    .domain(["2020", "2021", "2022"])
+    .domain(groupData.map((el) => el[0]))
     // .domain(d3Data.map(colorValue))
     .range(["#e41a1c", "#377eb8", "#4daf4a"]);
 
   const filteredData = d3Data.filter((d) => hoveredValue === colorValue(d));
-
-  const groupData = groups(d3Data, (d) => d.year);
 
   const sumstat = groups(filteredData, (d) => d.year);
 

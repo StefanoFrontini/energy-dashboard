@@ -194,25 +194,7 @@ const ConsumiFasce = ({ d3Data, svgWidth, svgHeight }) => {
                     >
                       {item[0]}
                     </text>
-                    {/* <text
-                      transform={`translate(-60,${
-                        innerHeight / 2
-                      }) rotate(-90)`}
-                      textAnchor="middle"
-                      className="axis-label"
-                    >
-                      kWh
-                    </text> */}
-                    {/* <text
-                      transform={`translate(${innerWidth / 2},${
-                        innerHeight + 40
-                      })`}
-                      textAnchor="middle"
-                      alignmentBaseline="hanging"
-                      className="axis-label"
-                    >
-                      Time
-                    </text> */}
+
                     <g transform={`translate(${innerWidth + 20})`}>
                       <ColorLegend
                         colorScale={colorScale}
