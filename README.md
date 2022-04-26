@@ -4,10 +4,7 @@
 # Energy Dashboard
 
 The app allows the user to visually analyze the electricity and gas consumption behavior of his customers in order to highlight trends and anomalies. As an energy consultant the goal of the project was to enhance my energy consulting services and to gain experience using tools such as React, D3, JSON web tokens and STRAPI (headless CMS).
-
-## Table of Contents
 - [Energy Dashboard](#energy-dashboard)
-  - [Table of Contents](#table-of-contents)
   - [The challenge](#the-challenge)
   - [Links](#links)
   - [Setup](#setup)
@@ -239,7 +236,7 @@ While unit testing the component LoginForm.js I ecountered an issue related to d
   }
 ```
 
-When the app make use of the Context API and React Router the unit tests must take this into account by wrapping the component to test with the AppProvider and the Router:
+When the app make use of the Context API and React Router the unit tests must take this into account by wrapping the component to test with the AppProvider and the Router component:
 
 ```javascript
 import { render, screen } from "@testing-library/react";

@@ -69,7 +69,7 @@ const Dashboard = React.forwardRef((props, ref) => {
             </section>
             <section>
               {/* <h3>Andamento consumi mensili (kWh)</h3> */}
-              <h3>Monthly consumptions (kWh)</h3>
+              <h3>Monthly consumption (kWh)</h3>
               {podData.d3Data && (
                 <ConsumiMensiliEnergia
                   {...podData}
@@ -87,7 +87,7 @@ const Dashboard = React.forwardRef((props, ref) => {
 
             <section>
               {/* <h3>Andamento consumi mensili per fasce (kWh)</h3> */}
-              <h3>Monthly consumptions by bands (kWh)</h3>
+              <h3>Monthly consumption by bands (kWh)</h3>
 
               {podData.d3Data && (
                 <ConsumiFasce
@@ -144,7 +144,7 @@ const Dashboard = React.forwardRef((props, ref) => {
               {podData.d3DataOrari && (
                 <>
                   {/* <h3>Consumi orari (kWh)</h3> */}
-                  <h3>Hourly consumptions (kWh)</h3>
+                  <h3>Hourly consumption (kWh)</h3>
                   <ConsumiOrari
                     {...podData}
                     svgWidth={svgWidth}
@@ -181,7 +181,7 @@ const Dashboard = React.forwardRef((props, ref) => {
               {pdrData.d3Data && (
                 <>
                   {/* <h3>Andamento consumi mensili gas (Smc)</h3> */}
-                  <h3>Monthly consumptions (Smc)</h3>
+                  <h3>Monthly consumption (Smc)</h3>
                   <ConsumiMensiliGas
                     {...pdrData}
                     svgWidth={svgWidth}
@@ -214,7 +214,7 @@ const Dashboard = React.forwardRef((props, ref) => {
             </section>
             <section>
               {/* <h3>Andamento consumi mensili (kWh)</h3> */}
-              <h3>Monthly consumptions (kWh)</h3>
+              <h3>Monthly consumption (kWh)</h3>
               {testPodData.d3Data && (
                 <ConsumiMensiliEnergia
                   {...testPodData}
@@ -232,7 +232,7 @@ const Dashboard = React.forwardRef((props, ref) => {
 
             <section>
               {/* <h3>Andamento consumi mensili per fasce (kWh)</h3> */}
-              <h3>Monthly consumptions by bands(kWh)</h3>
+              <h3>Monthly consumption by bands (kWh)</h3>
 
               {testPodData.d3Data && (
                 <ConsumiFasce
@@ -273,7 +273,7 @@ const Dashboard = React.forwardRef((props, ref) => {
             </section>
             <section>
               {/* <h3>Picco di potenza (kW) e Consumi mensili (kWh)</h3> */}
-              <h3>Peak Power (kW) and monthly consumptions (kWh)</h3>
+              <h3>Peak Power (kW) and monthly consumption (kWh)</h3>
 
               {testPodData.d3Data && (
                 <PiccoConsumi
@@ -295,7 +295,7 @@ const Dashboard = React.forwardRef((props, ref) => {
               {testPodData.d3DataOrari && (
                 <>
                   {/* <h3>Consumi orari (kWh)</h3> */}
-                  <h3>Hourly consumptions (kWh)</h3>
+                  <h3>Hourly consumption (kWh)</h3>
                   <ConsumiOrari
                     {...testPodData}
                     svgWidth={svgWidth}
@@ -334,7 +334,7 @@ const Dashboard = React.forwardRef((props, ref) => {
               {testPdrData.d3Data && (
                 <>
                   {/* <h3>Andamento consumi mensili gas (Smc)</h3> */}
-                  <h3>Monthly consumptions gas (Smc)</h3>
+                  <h3>Monthly consumption gas (Smc)</h3>
                   <ConsumiMensiliGas
                     {...testPdrData}
                     svgWidth={svgWidth}

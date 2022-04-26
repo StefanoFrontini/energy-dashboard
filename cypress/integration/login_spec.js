@@ -56,12 +56,12 @@ describe("login", () => {
 
     // expect to see the address
     cy.findByRole("heading", {
-      name: /cascina coronate snc \- 20081 morimondo \(mi\)/i,
+      name: /cascina coronate snc - 20081 morimondo \(mi\)/i,
     }).should("be.visible");
 
     // expect to click on a pod button
     cy.findByRole("heading", {
-      name: /cascina coronate snc \- 20081 morimondo \(mi\)/i,
+      name: /cascina coronate snc - 20081 morimondo \(mi\)/i,
     }).click();
 
     // expect to update dashboard

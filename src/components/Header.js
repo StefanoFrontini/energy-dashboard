@@ -11,10 +11,9 @@ const Header = () => {
         Stefano Frontini<br></br>energy consultant
         <br></br>
         <a href="www.pilloledienergia.com">www.pilloledienergia.com</a>
-        <br></br>
-        <a href="mailto: stefano.frontini@con.repower.com">
+        {/* <a href="mailto: stefano.frontini@con.repower.com">
           stefano.frontini@con.repower.com
-        </a>
+        </a> */}
         <br></br>
         <a href="https://www.linkedin.com/in/stefano-frontini/">LinkedIn</a>
         <br></br>
