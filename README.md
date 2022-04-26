@@ -6,6 +6,8 @@ The app allows the user to visually analyze the electricity and gas consumption 
   - [Links](#links)
   - [Setup](#setup)
   - [Built with](#built-with)
+    - [Frontend](#frontend)
+    - [Backend](#backend)
   - [What I learned](#what-i-learned)
     - [React and D3 integration](#react-and-d3-integration)
     - [Working with the dataset](#working-with-the-dataset)
@@ -63,7 +65,11 @@ $ npm start
 ```
 
 ## Built with
+### Frontend
 
+- HTML
+- Javascript
+- CSS Flexbox and Grid
 - React
 - React router v6
 - React Markdown
@@ -71,9 +77,12 @@ $ npm start
 - React icons
 - Js-cookie
 - D3
-- CSS Flexbox and Grid
 - GraphQL
+- Deployed on Netlify
 
+### Backend
+- Strapi v4 (Headless CMS)
+- Deployed on Heroku
 ## What I learned
 
 ### React and D3 integration
