@@ -1,9 +1,6 @@
-
-
-
 # Energy Dashboard
 
-The app allows the user to visually analyze the electricity and gas consumption behavior of his customers in order to highlight trends and anomalies. As an energy consultant the goal of the project was to enhance my energy consulting services and to gain experience using tools such as React, D3, JSON web tokens and STRAPI (headless CMS).
+The app allows the user to visually analyze the electricity and gas consumption behavior of his customers in order to highlight trends and anomalies. As an energy consultant the goal of the project was to enhance my energy consulting services and to gain experience using tools such as React, D3, JSON web tokens, GraphQL and STRAPI (headless CMS).
 - [Energy Dashboard](#energy-dashboard)
   - [The challenge](#the-challenge)
   - [Links](#links)
@@ -15,6 +12,7 @@ The app allows the user to visually analyze the electricity and gas consumption 
       - [Grouping data](#grouping-data)
       - [Computing a summary value](#computing-a-summary-value)
     - [User Authentication](#user-authentication)
+    - [Querying the API with GraphQL](#querying-the-api-with-graphql)
   - [Testing](#testing)
   - [Continous Deployment](#continous-deployment)
   - [References](#references)
@@ -38,6 +36,11 @@ Type of charts requested:
 
 - [Live Site URL](https://energy-report.netlify.app/)
 - [Backend (Github)](https://github.com/StefanoFrontini/pilloledienergia-api)
+
+Dummy data can be found here:
+- [testPodMonthly](https://gist.github.com/StefanoFrontini/d01b85bf65f4e43eea541d22191302b0)
+- [testPodHourly](https://gist.github.com/StefanoFrontini/dae797135cac98c1903eb6855e5d1652)
+- [testPdrMonthly](https://gist.github.com/StefanoFrontini/af4ac0ee2c054a68340031d459739d3f)
 
 ## Setup
 
@@ -69,6 +72,7 @@ $ npm start
 - Js-cookie
 - D3
 - CSS Flexbox and Grid
+- GraphQL
 
 ## What I learned
 
@@ -145,6 +149,8 @@ return (
 );
 ```
 
+
+
 ### Working with the dataset
 
 #### Grouping data
@@ -212,6 +218,197 @@ When a user authenticates the useReducer Hook dispatches a LOGIN action which up
 
 Context API provides a way to pass data through the component tree without having to pass props down manually at every level (props drilling).
 
+### Querying the API with GraphQL
+Strapi v4 made some breaking changes to the GraphQL layer with respect to Strapi v3.
+
+To get the data from the API I basically needed two types of queries:
+
+- Get the list of all the Clients to populate the sidebar:
+
+```javascript
+import axios from "axios";
+import { useState, useEffect } from "react";
+
+const { REACT_APP_URL } = process.env;
+
+const GET_TEST_AZIENDAS = `query {
+  testAziendas(pagination: { limit: -1 }, sort:"ragioneSociale:asc"){
+    data{
+      id
+      attributes{
+        ragioneSociale
+        partitaIva
+        pods{
+          data{
+            id
+            attributes{
+              indirizzo
+              podId
+            }
+          }
+        }
+        pdrs{
+          data{
+            id
+            attributes{
+              indirizzo
+              pdrId
+            }
+          }
+        }
+      }
+    }
+  }
+}`;
+
+const useTestAziendaData = (auth) => {
+  const [data, setData] = useState([]);
+  const [loadingAziendaData, setLoadingAziendaData] = useState(false);
+
+  const fetchAziendas = async () => {
+    setLoadingAziendaData(true);
+
+    try {
+      const {
+        data: {
+          data: {
+            testAziendas: { data },
+          },
+        },
+      } = await axios({
+        url: REACT_APP_URL,
+        method: "POST",
+        data: {
+          query: GET_TEST_AZIENDAS,
+        },
+      });
+      if (data) {
+        setData(data);
+        setLoadingAziendaData(false);
+      } else {
+        setData([]);
+      }
+      setLoadingAziendaData(false);
+    } catch (error) {
+      console.log(error);
+      setLoadingAziendaData(false);
+    }
+  };
+  useEffect(() => {
+    if (!auth) {
+      fetchAziendas();
+    }
+  }, [auth]);
+  return { data, loadingAziendaData };
+};
+
+export default useTestAziendaData;
+
+```
+
+- Get the data from a specific meter:
+
+```javascript
+const GET_TEST_POD_DATA = `query ($id: ID!){
+  testPod(id: $id){
+    data{
+      id
+      attributes{
+        podId
+        indirizzo
+        consumiMensili
+        consumiOrari
+        fasceCommento
+        mensiliCommento
+        piccoCommento
+        piccoConsumiCommento
+        orariCommento
+        azienda {
+          data{
+            id
+            attributes{
+              ragioneSociale
+            }
+          }
+        }
+
+      }
+    }
+  }
+}`;
+
+const useTestPodData = (auth) => {
+  const [loadingPodData, setLoadingPodData] = useState(false);
+  const [data, setData] = useState({});
+  const [podId, setPodId] = useState("1");
+  const fetchPod = useCallback(async () => {
+    let variables = {};
+    variables.id = podId;
+    setLoadingPodData(true);
+    try {
+      const {
+        data: {
+          data: {
+            testPod: { data },
+          },
+        },
+      } = await axios({
+        url: REACT_APP_URL,
+        method: "POST",
+
+        data: {
+          query: GET_TEST_POD_DATA,
+          variables,
+        },
+      });
+
+      if (data) {
+        const dataset = transform(data.attributes.consumiMensili.data);
+        const domain = extent(dataset, (d) => d.date);
+        const start = formatTime(domain[0]);
+        const end = formatTime(domain[1]);
+
+        const rawData = {
+          ragioneSociale:
+            data.attributes.azienda.data.attributes.ragioneSociale,
+          pod: data.attributes.podId,
+          indirizzo: data.attributes.indirizzo,
+          mensiliCommento: data.attributes.mensiliCommento,
+          fasceCommento: data.attributes.fasceCommento,
+          piccoCommento: data.attributes.piccoCommento,
+          piccoConsumiCommento: data.attributes.piccoConsumiCommento,
+          orariCommento: data.attributes.orariCommento,
+          d3Data: transform(data.attributes.consumiMensili.data),
+          d3DataOrari:
+            data.attributes.consumiOrari &&
+            transformOrari(data.attributes.consumiOrari.data),
+          inizioPeriodo: start,
+          finePeriodo: end,
+        };
+
+        setData(rawData);
+        setLoadingPodData(false);
+      } else {
+        setData([]);
+        setLoadingPodData(false);
+      }
+      setLoadingPodData(false);
+    } catch (error) {
+      console.log(error);
+      setLoadingPodData(false);
+    }
+  }, [podId]);
+  useEffect(() => {
+    if (!auth) {
+      fetchPod();
+    }
+  }, [podId, fetchPod, auth]);
+  return { data, podId, setPodId, loadingPodData };
+};
+
+export default useTestPodData;
+```
+
 ## Testing
 
 Testing involves the login functionality and the updating of the dashboard when the user clicks on his clients.
@@ -259,7 +456,6 @@ test("on initial render, the submit button is disabled", () => {
       </Router>
     </AppProvider>
   );
-  //screen.getByRole("");
   expect(screen.getByRole("button", { name: /submit/i })).toBeDisabled();
 });
 ```
