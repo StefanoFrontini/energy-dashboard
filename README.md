@@ -1,6 +1,10 @@
 # Energy Dashboard
 
 The app allows the user to visually analyze the electricity and gas consumption behavior of his customers in order to highlight trends and anomalies. As an energy consultant the goal of the project was to enhance my energy consulting services and to gain experience using tools such as React, D3, JSON web tokens, GraphQL and Strapi (headless CMS).
+
+<img src="https://res.cloudinary.com/stefano75/image/upload/v1650785327/HOURLY_lvd19q.png" width="350"/>
+
+
 - [Energy Dashboard](#energy-dashboard)
   - [The challenge](#the-challenge)
   - [Links](#links)
