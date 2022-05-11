@@ -47,14 +47,14 @@ const PiccoConsumi = ({ svgWidth, svgHeight, d3Data }) => {
 
   const groupByYear = groups(d3Data, yearValue);
 
-  // console.log("groupByYear", groupByYear);
-
   const filteredData = hoveredPoint
     ? d3Data.filter((d) => formatTime(d.month) === formatTime(hoveredPoint[2]))
     : d3Data;
+
+  // data rendered when user clicks on a data point
   const sumstat = groups(filteredData, yearValue);
   return (
-    <div className="cocktail">
+    <div className="month-charts">
       {groupByYear.map((item, i) => {
         return (
           <svg
@@ -130,25 +130,6 @@ const PiccoConsumi = ({ svgWidth, svgHeight, d3Data }) => {
                     >
                       {item[0]}
                     </text>
-                    {/* <text
-                      transform={`translate(-60,${
-                        innerHeight / 2
-                      }) rotate(-90)`}
-                      textAnchor="middle"
-                      className="axis-label"
-                    >
-                      Picco - kW
-                    </text> */}
-                    {/* <text
-                      transform={`translate(${innerWidth / 2},${
-                        innerHeight + 40
-                      })`}
-                      textAnchor="middle"
-                      alignmentBaseline="hanging"
-                      className="axis-label"
-                    >
-                      Consumi mensili kWh
-                    </text> */}
                   </g>
                 );
               })}

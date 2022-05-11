@@ -46,9 +46,8 @@ const ConsumiOrari = ({ d3DataOrari }) => {
     giornoTipoValue,
     hourValue
   );
-  console.log("D3DataOrari", d3DataOrari);
-  console.log("RollupData", rollupData);
 
+  // In order for the data to be rendered properly, the groups must follow this order: lavorativo, saturday, sunday. If the month starts with a saturday for instance, d3.rollups generate 3 groups in this order: saturday, sunday, lavorativo.
   const orderedRollupData = rollupData.map((year) => {
     let newArr = year[1].map((el) => {
       if (el[1][0][0] === "saturday") {
@@ -97,16 +96,17 @@ const ConsumiOrari = ({ d3DataOrari }) => {
 
   return (
     <>
-      {orderedRollupData.map((year, k) => {
+      {orderedRollupData.map((year) => {
         return year[1].map((month, ind) => {
           z = z + 1;
           return (
+            // Charts should be at most 12 (January to December). The variable z takes care of that. For the charts to be printed in PDF nicely, it is necessary to put a page break div when z is equal to 5 or 12.
             z < 13 &&
             (((z === 5) | (z === 9) && (
               <div key={ind}>
                 <div id="pageFooter"></div>
                 <div className="page-break"></div>
-                <div className="cocktail">
+                <div className="month-charts">
                   {month[1].map((giornoTipo, j) => {
                     return (
                       <svg
@@ -201,7 +201,7 @@ const ConsumiOrari = ({ d3DataOrari }) => {
                 </div>
               </div>
             )) || (
-              <div key={ind} className="cocktail">
+              <div key={ind} className="month-charts">
                 {month[1].map((giornoTipo, j) => {
                   return (
                     <svg width={svgWidthOrari} height={svgHeightOrari} key={j}>

@@ -47,12 +47,6 @@ const Sidebar = () => {
     state.isAuthenticated,
   ]);
 
-  // if (loading) {
-  //   return <Loading />;
-  // }
-  // if (filtered.length < 1) {
-  //   return <h2 className="section-title">no aziendas</h2>;
-  // }
   return (
     <aside className={`${isSidebarOpen ? "sidebar show-sidebar" : "sidebar"}`}>
       <div className="sidebar-header">

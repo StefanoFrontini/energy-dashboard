@@ -66,13 +66,14 @@ const ConsumiFasce = ({ d3Data, svgWidth, svgHeight }) => {
   const filteredData = d3Data.filter(
     (d) => formatTime(d.month) === formatTime(hoveredPoint[0])
   );
-
+  // data rendered when user clicks on a legend item
   const sumstat = groups(filteredData, yearValue);
 
   return (
     <>
       {groupByYear.map((item, i) => {
         return (
+          // the viewbox is necessary to make the charts responsive
           <svg viewBox={`0 0 ${svgWidthFasce} ${svgHeightFasce}`} key={item[0]}>
             <g
               transform={`translate(${margin.left},${margin.top})`}

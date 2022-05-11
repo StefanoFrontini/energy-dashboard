@@ -29,26 +29,15 @@ const formatTime = timeFormat("%b");
 
 const margin = { top: 40, right: 100, bottom: 80, left: 80 };
 
-const ConsumiMensiliEnergia = ({
-  ragioneSociale,
-  pod,
-  d3Data,
-  indirizzo,
-  commento,
-  svgWidth,
-  svgHeight,
-}) => {
+const ConsumiMensiliEnergia = ({ d3Data, svgWidth, svgHeight }) => {
   const [hoveredValue, setHoveredValue] = useState(null);
   const [hoveredPoint, setHoveredPoint] = useState(null);
 
-  // console.log("d3Data", d3Data);
   const innerWidth = svgWidth - margin.left - margin.right;
   const innerHeight = svgHeight - margin.top - margin.bottom;
   const xScale = scaleTime()
     .domain(extent(d3Data, xValue))
     .range([0, innerWidth]);
-
-  console.log("d3Data", d3Data);
 
   const yScale = scaleLinear()
     .domain([0, max(d3Data, yValue)])
@@ -62,14 +51,15 @@ const ConsumiMensiliEnergia = ({
 
   const colorScale = scaleOrdinal()
     .domain(groupData.map((el) => el[0]))
-    // .domain(d3Data.map(colorValue))
     .range(["#e41a1c", "#377eb8", "#4daf4a"]);
 
   const filteredData = d3Data.filter((d) => hoveredValue === colorValue(d));
 
+  // data rendered when user clicks on a legend item
   const sumstat = groups(filteredData, (d) => d.year);
 
   return (
+    // the viewbox is necessary to make the charts responsive
     <svg viewBox={`0 0 ${svgWidth} ${svgHeight}`}>
       <g transform={`translate(${margin.left},${margin.top})`}>
         {yScale.ticks().map((tickValue, index) => {
@@ -104,8 +94,7 @@ const ConsumiMensiliEnergia = ({
             </text>
           );
         })}
-        {/* <XAxis xScale={xScale} innerHeight={innerHeight} />
-        <YAxis yScale={yScale} innerWidth={innerWidth} /> */}
+
         <g opacity={hoveredValue ? fadeOpacity : 1}>
           {groupData.map((item) => {
             return (
@@ -158,28 +147,6 @@ const ConsumiMensiliEnergia = ({
           );
         })}
 
-        {/* <path d={lineGenerator(d3Data)} /> */}
-        {/* <text
-          transform={`translate(${innerWidth / 2},-20)`}
-          textAnchor="middle"
-        >
-          Andamento consumi mensili (kWh)
-        </text> */}
-        {/* <text
-          transform={`translate(-60,${innerHeight / 2}) rotate(-90)`}
-          textAnchor="middle"
-          className="axis-label"
-        >
-          kWh
-        </text> */}
-        {/* <text
-          transform={`translate(${innerWidth / 2},${innerHeight + 40})`}
-          textAnchor="middle"
-          alignmentBaseline="hanging"
-          className="axis-label"
-        >
-          Time
-        </text> */}
         <g transform={`translate(${innerWidth + 20})`}>
           <ColorLegend
             colorScale={colorScale}
