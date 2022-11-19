@@ -14,12 +14,12 @@ const Header = () => {
         {/* <a href="mailto: stefano.frontini@con.repower.com">
           stefano.frontini@con.repower.com
         </a> */}
-        <br></br>
+        {/*        <br></br>
         <a href="https://www.linkedin.com/in/stefano-frontini/">LinkedIn</a>
         <br></br>
         <a href="https://www.youtube.com/channel/UCR-O1aNnCvdtANr8Yf7h_RQ">
           YouTube
-        </a>
+        </a> */}
       </p>
     </header>
   );
